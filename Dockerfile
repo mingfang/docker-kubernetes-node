@@ -1,0 +1,28 @@
+FROM ubuntu:14.04
+ 
+ENV DEBIAN_FRONTEND noninteractive
+RUN apt-get update
+RUN locale-gen en_US en_US.UTF-8
+ENV LANG en_US.UTF-8
+
+#Runit
+RUN apt-get install -y runit 
+CMD env > /etc/envvars && /usr/sbin/runsvdir-start
+
+#Utilities
+RUN apt-get install -y vim less net-tools inetutils-ping wget curl git telnet nmap socat dnsutils netcat tree htop unzip sudo software-properties-common
+
+#Proxy needs iptables
+RUN apt-get install -y iptables
+
+#Docker client only
+RUN wget -O /usr/local/bin/docker https://get.docker.io/builds/Linux/x86_64/docker-latest && \
+    chmod +x /usr/local/bin/docker
+
+#Kubernetes
+RUN curl -L https://github.com/GoogleCloudPlatform/kubernetes/releases/download/v0.8.1/kubernetes.tar.gz | tar zx
+RUN tar -xvf /kubernetes/server/kubernetes-server-linux-amd64.tar.gz --strip-components 3 -C /usr/local/bin 
+
+#Add runit services
+ADD sv /etc/service 
+

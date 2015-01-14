@@ -1,0 +1,12 @@
+#!/bin/sh
+
+. /etc/envvars
+
+KUBELET_OPTS="--address=0.0.0.0 \
+--api_servers=${KUBERNETES_MASTER}:8080 \
+--port=10250 \
+--etcd_servers=http://${ETCD_HOST}:4001 \
+--logtostderr=true"
+
+exec 2>&1
+exec kubelet ${KUBELET_OPTS}
