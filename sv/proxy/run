@@ -1,6 +1,7 @@
-#!/bin/sh
+#!/bin/bash
 
-. /etc/envvars
+source /etc/envvars
+env
 
 KUBE_PROXY_OPTS="--etcd_servers=http://${ETCD_HOST}:4001 \
 --logtostderr=true"
