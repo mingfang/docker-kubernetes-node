@@ -1,1 +1,1 @@
-docker run --privileged=true -e KUBERNETES_MASTER="http://`hostname`:8080" -e ETCD_HOST=`hostname` -v /var/run/docker.sock:/run/docker.sock -v `pwd`:/docker -w /docker --rm -i -t kubernetes-node /bin/bash
+docker run -h=`hostname` -p 10250:10250 --privileged=true -e KUBERNETES_MASTER="http://`hostname`:8080" -e ETCD_HOST=`hostname` -v /var/run/docker.sock:/run/docker.sock -v `pwd`:/docker -w /docker --rm -i -t kubernetes-node /bin/bash
