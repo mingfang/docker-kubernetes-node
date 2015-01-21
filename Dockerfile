@@ -21,7 +21,7 @@ RUN wget -O /usr/local/bin/docker https://get.docker.io/builds/Linux/x86_64/dock
     chmod +x /usr/local/bin/docker
 
 #Kubernetes
-RUN curl -L https://github.com/GoogleCloudPlatform/kubernetes/releases/download/v0.8.1/kubernetes.tar.gz | tar zx
+RUN curl -L https://github.com/GoogleCloudPlatform/kubernetes/releases/download/v0.9.0/kubernetes.tar.gz | tar zx
 RUN tar -xvf /kubernetes/server/kubernetes-server-linux-amd64.tar.gz --strip-components 3 -C /usr/local/bin 
 
 #Add runit services
