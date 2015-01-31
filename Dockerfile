@@ -16,12 +16,16 @@ RUN apt-get install -y vim less net-tools inetutils-ping wget curl git telnet nm
 #Proxy needs iptables
 RUN apt-get install -y iptables
 
+#jq
+RUN wget -P /usr/bin http://stedolan.github.io/jq/download/linux64/jq && \
+    chmod +x /usr/bin/jq
+
 #Docker client only
 RUN wget -O /usr/local/bin/docker https://get.docker.io/builds/Linux/x86_64/docker-latest && \
     chmod +x /usr/local/bin/docker
 
 #Kubernetes
-RUN curl -L https://github.com/GoogleCloudPlatform/kubernetes/releases/download/v0.9.0/kubernetes.tar.gz | tar zx
+RUN curl -L https://github.com/GoogleCloudPlatform/kubernetes/releases/download/v0.9.3/kubernetes.tar.gz | tar zx
 RUN tar -xvf /kubernetes/server/kubernetes-server-linux-amd64.tar.gz --strip-components 3 -C /usr/local/bin 
 
 #Add runit services

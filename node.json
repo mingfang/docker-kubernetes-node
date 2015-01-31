@@ -1,0 +1,11 @@
+{
+  "id": "hostname",
+  "kind": "Minion",
+  "apiVersion": "v1beta2",
+  "resources": {
+    "capacity": {
+      "cpu": "1000",
+      "memory": 1073741824
+    }
+  }
+}
