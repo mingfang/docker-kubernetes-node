@@ -1,12 +1,16 @@
 #!/bin/bash
 
-source /etc/envvars
-env
+sv start register  || exit 1
 
+source /etc/envvars
+
+IP=`ip route get 1 | awk '{print $NF;exit}'`
 KUBELET_OPTS="--address=0.0.0.0 \
+--hostname_override=$IP \
 --port=10250 \
 --etcd_servers=http://${ETCD_HOST}:4001 \
 --logtostderr=true"
 
+env
 exec 2>&1
 exec kubelet ${KUBELET_OPTS}
