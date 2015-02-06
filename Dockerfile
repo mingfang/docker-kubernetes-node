@@ -30,6 +30,10 @@ RUN tar -xvf /kubernetes/server/kubernetes-server-linux-amd64.tar.gz --strip-com
 
 ADD register.sh /register.sh
 
+#Aliases
+ADD aliases /root/.aliases
+RUN echo "source ~/.aliases" >> /root/.bashrc
+
 #Add runit services
 ADD sv /etc/service 
 
