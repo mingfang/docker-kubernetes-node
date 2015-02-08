@@ -91,5 +91,5 @@ fi
 ./ovs-show.sh
 
 # Restart Docker daemon to use the new DOCKER_BRIDGE
-echo -e "\nUse the OVS bridge by setting DOCKER_OPTS=\"--bridge=$DOCKER_BRIDGE\" in file /etc/defaults/docker."
+echo -e "\nUse the OVS bridge by setting DOCKER_OPTS=\"--bridge=$DOCKER_BRIDGE --mtu=1420\" in file /etc/defaults/docker."
 echo "Then restart Docker e.g. service docker restart"
