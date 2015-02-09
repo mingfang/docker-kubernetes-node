@@ -1,6 +1,9 @@
 #!/bin/bash
 
 HOST_IP=`ip route get 1 | awk '{print $NF;exit}'`
+CORES=$(cat /proc/cpuinfo | grep processor | wc -l)
+let CPU=$CORES*1000
+
 cat <<END | kubectl create -f -
 {
   "id": "$HOST_IP",
@@ -8,7 +11,7 @@ cat <<END | kubectl create -f -
   "apiVersion": "v1beta2",
   "resources": {
     "capacity": {
-      "cpu": "1000",
+      "cpu": "$CPU",
       "memory": `free -b|grep Mem|awk '{print $2}'` 
     }
   },
