@@ -65,17 +65,6 @@ ip link set dev tep0 up
 # Enables routing to other hosts, critical
 ip route add 10.244.0.0/16 dev tep0 
 
-# Add Remote End Point for GRE, need one for each host, will use etcd for this
-if [ -z "$REMOTE_IP" ]
-then
-  echo "REMOTE_IP is not set. Will not create tunnel."
-else
-  echo "REMOTE_IP=$REMOTE_IP"
-  # Create the tunnel to the other host and attach it to the
-  # OVS_BRIDGE bridge
-  ovs-vsctl add-port $OVS_BRIDGE gre0 -- set interface gre0 type=gre options:remote_ip=$REMOTE_IP
-fi
-
 #don't know what to do with iptable yet
 # iptables rules
 
