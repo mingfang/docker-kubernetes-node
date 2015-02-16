@@ -1,1 +1,12 @@
-docker run -p 10250:10250 --privileged=true -e KUBERNETES_MASTER="http://`hostname`:8080" -e ETCD_HOST=`hostname` -v /var/run/docker.sock:/run/docker.sock -d kubernetes-node
+#!/bin/bash
+
+KUBERNETES_MASTER=$1
+
+if [ -z "$KUBERNETES_MASTER" ]
+then
+  echo "KUBERNETES_MASTER not set"
+else
+  echo "KUBERNETES_MASTER=$KUBERNETES_MASTER"
+  docker run --net=host -p 10250:10250 --privileged=true -e KUBERNETES_MASTER="http://$KUBERNETES_MASTER:8080" -e ETCD_HOST=$KUBERNETES_MASTER -v /var/run/docker.sock:/run/docker.sock -d kubernetes-node
+fi
+
