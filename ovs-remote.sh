@@ -17,5 +17,5 @@ else
   # Create the tunnel to the other host and attach it to the OVS_BRIDGE bridge
   ovs-vsctl add-port $OVS_BRIDGE $GRE -- set interface $GRE type=gre options:remote_ip=$REMOTE_IP
 
-  CMD="ovs-vsctl show" echo -e "\n$CMD" && eval $CMD
+  CMD="ovs-vsctl show" && echo -e "\n$CMD" && eval $CMD
 fi
