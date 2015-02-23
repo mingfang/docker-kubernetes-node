@@ -9,36 +9,28 @@ echo
 
 # Find the last octet of the IP address
 HOST_IP=`ip route get 1 | awk '{print $NF;exit}'`
-echo "HOST_IP=$HOST_IP"
 LAST="${HOST_IP##*.}"
-echo "LAST=$LAST"
 
 # The subnet for all Docker containers on this host
-if [ -z "$BRIDGE_ADDRESS" ]
-then
-  BRIDGE_ADDRESS=10.244.$LAST.1/24
-fi
-echo "BRIDGE_ADDRESS=$BRIDGE_ADDRESS"
+BRIDGE_ADDRESS=10.244.$LAST.1/24
 
 # Name of the bridge (should match /etc/default/docker).
-if [ -z "$DOCKER_BRIDGE" ]
-then
-  DOCKER_BRIDGE=kbr0
-fi
+DOCKER_BRIDGE=kbr0
+
+echo "HOST_IP=$HOST_IP"
+echo "LAST=$LAST"
+echo "BRIDGE_ADDRESS=$BRIDGE_ADDRESS"
 echo "DOCKER_BRIDGE=$DOCKER_BRIDGE"
 
 # Docker bridge
 
 # Deactivate the DOCKER_BRIDGE bridge
 ip link set $DOCKER_BRIDGE down
-# Remove the DOCKER_BRIDGE bridge
 brctl delbr $DOCKER_BRIDGE
 
 # Add the DOCKER_BRIDGE bridge
 brctl addbr $DOCKER_BRIDGE
-# Set up the IP for the DOCKER_BRIDGE bridge
 ip a add $BRIDGE_ADDRESS dev $DOCKER_BRIDGE
-# Activate the bridge
 ip link set $DOCKER_BRIDGE up
 
 # OVS Bridge
@@ -64,18 +56,6 @@ ip link set dev tep0 up
 
 # Enables routing to other hosts, critical
 ip route add 10.244.0.0/16 dev tep0 
-
-#don't know what to do with iptable yet
-# iptables rules
-
-# Enable NAT
-#iptables -t nat -A POSTROUTING -s 10.244.0.0/16 ! -d 10.244.0.0/16 -j MASQUERADE
-# Accept incoming packets for existing connections
-#iptables -A FORWARD -o $DOCKER_BRIDGE -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
-# Accept all non-intercontainer outgoing packets
-#iptables -A FORWARD -i $DOCKER_BRIDGE ! -o $DOCKER_BRIDGE -j ACCEPT
-# By default allow all outgoing traffic
-#iptables -A FORWARD -i $DOCKER_BRIDGE -o $DOCKER_BRIDGE -j ACCEPT
 
 ./ovs-show.sh
 
