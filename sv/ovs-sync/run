@@ -1,0 +1,9 @@
+#!/bin/bash
+
+source /etc/envvars
+env
+
+cd /
+
+exec 2>&1
+exec while true; sleep 10; ./ovs-sync.sh; done;

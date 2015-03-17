@@ -29,6 +29,9 @@ RUN wget -O - https://github.com/GoogleCloudPlatform/kubernetes/releases/downloa
 RUN tar -xvf /kubernetes/server/kubernetes-server-linux-amd64.tar.gz --strip-components 3 -C /usr/local/bin 
 
 ADD register.sh /register.sh
+ADD ovs-sync.sh /ovs-sync.sh
+ADD ovs-remote.sh /ovs-remote.sh
+ADD ovs-show.sh /ovs-show.sh
 
 #Aliases
 ADD aliases /root/.aliases
