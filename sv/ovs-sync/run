@@ -1,9 +1,11 @@
 #!/bin/bash
 
+sv start register || exit 1
+
 source /etc/envvars
 env
 
 cd /
 
 exec 2>&1
-exec while true; sleep 10; ./ovs-sync.sh; done;
+while true; do ./ovs-sync.sh; sleep 30; done;
