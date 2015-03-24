@@ -28,6 +28,9 @@ RUN wget -O /usr/local/bin/docker https://get.docker.io/builds/Linux/x86_64/dock
 RUN wget -O - https://github.com/GoogleCloudPlatform/kubernetes/releases/download/v0.13.2/kubernetes.tar.gz| tar zx
 RUN tar -xvf /kubernetes/server/kubernetes-server-linux-amd64.tar.gz --strip-components 3 -C /usr/local/bin 
 
+#Need this for ovs-ovsctl
+RUN apt-get install -y openvswitch-switch
+
 ADD register.sh /register.sh
 ADD ovs-sync.sh /ovs-sync.sh
 ADD ovs-remote.sh /ovs-remote.sh

@@ -8,7 +8,7 @@ IP=`ip route get 1 | awk '{print $NF;exit}'`
 KUBELET_OPTS="--address=0.0.0.0 \
 --hostname_override=$IP \
 --port=10250 \
---etcd_servers=http://${ETCD_HOST}:4001 \
+--api_servers=$KUBERNETES_MASTER \
 --logtostderr=true"
 
 env
