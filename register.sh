@@ -16,7 +16,8 @@ cat <<END | kubectl create -f -
     }
   },
   "labels": {
-    "hostname":"`hostname`"
-  }
+    "hostname": "`hostname`"
+  },
+  "externalId": "`hostname`"
 }
 END
