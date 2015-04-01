@@ -3,7 +3,5 @@
 source /etc/envvars
 env
 
-/register.sh
-
 exec 2>&1
-exec sleep infinity
+while true; do /register.sh; sleep 30; done;
