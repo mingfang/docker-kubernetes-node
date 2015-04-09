@@ -1,0 +1,8 @@
+[template]
+src = "kubernetes.conf.tmpl"
+dest = "/etc/dnsmasq.d/kubernetes.conf"
+keys = [
+    "/registry/services/specs/default"
+]
+
+reload_cmd = "sv restart dnsmasq"

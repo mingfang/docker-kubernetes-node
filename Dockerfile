@@ -41,6 +41,15 @@ ADD ovs-show.sh /ovs-show.sh
 ADD aliases /root/.aliases
 RUN echo "source ~/.aliases" >> /root/.bashrc
 
+#Confd
+RUN wget -O /usr/local/bin/confd  https://github.com/kelseyhightower/confd/releases/download/v0.8.0/confd-0.8.0-linux-amd64 && \
+    chmod +x /usr/local/bin/confd
+
+#Dnsmasq
+RUN apt-get install -y dnsmasq 
+
+ADD etc /etc/
+
 #Add runit services
 ADD sv /etc/service 
 
