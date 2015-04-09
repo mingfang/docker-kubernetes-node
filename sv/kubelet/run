@@ -11,8 +11,6 @@ KUBELET_OPTS="--address=0.0.0.0 \
 --api_servers=$KUBERNETES_MASTER \
 --config=/etc/kubernetes/manifests \
 --logtostderr=true"
---cluster_dns=127.0.0.1
---cluster_domain=kubernetes.local
 
 env
 exec 2>&1
