@@ -1,4 +1,4 @@
 {{range gets "/registry/services/specs/default/*"}}
   {{$service := json .Value}}
-  host-record={{$service.portalIP}},{{$service.id}}
+  {{$service.portalIP}} {{$service.id}}
 {{end}}

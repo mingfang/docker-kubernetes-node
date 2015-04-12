@@ -1,8 +1,9 @@
 [template]
 src = "kubernetes.conf.tmpl"
-dest = "/etc/dnsmasq.d/kubernetes.conf"
+dest = "/etc/kubernetes_hosts"
 keys = [
     "/registry/services/specs/default"
 ]
 
-reload_cmd = "sv restart dnsmasq"
+check_cmd = "dnsmasq --test"
+reload_cmd = "killall -HUP dnsmasq || true"
