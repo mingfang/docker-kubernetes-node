@@ -7,6 +7,17 @@ then
   echo "KUBERNETES_MASTER not set"
 else
   echo "KUBERNETES_MASTER=$KUBERNETES_MASTER"
-  docker run --net=host -p 10250:10250 --privileged=true -e KUBERNETES_MASTER="http://$KUBERNETES_MASTER:8080" -e ETCD_HOST=$KUBERNETES_MASTER -v /var/run/docker.sock:/run/docker.sock -v /var/run/openvswitch/db.sock:/var/run/openvswitch/db.sock -d kubernetes-node
+  docker run \
+         --net=host \
+         -p 10250:10250 \
+         --privileged=true \
+         -e KUBERNETES_MASTER="http://$KUBERNETES_MASTER:8080" \
+         -e ETCD_HOST=$KUBERNETES_MASTER \
+         -v /var/run/docker.sock:/run/docker.sock \
+         -v /var/run/openvswitch/db.sock:/var/run/openvswitch/db.sock \
+         -v /:/rootfs:ro \
+         -v /var/run:/var/run:rw \
+         -v /sys:/sys:ro \
+         -d kubernetes-node
 fi
 
