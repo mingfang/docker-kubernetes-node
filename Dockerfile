@@ -29,7 +29,7 @@ RUN wget -O - https://github.com/GoogleCloudPlatform/kubernetes/releases/downloa
 RUN tar -xvf /kubernetes/server/kubernetes-server-linux-amd64.tar.gz --strip-components 3 -C /usr/local/bin 
 
 #Manifests
-#ADD manifests /etc/kubernetes/manifests
+RUN mkdir -p /etc/kubernetes/manifests
 
 #OVS Scripts
 ADD register.sh /register.sh
