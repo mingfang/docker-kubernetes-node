@@ -6,5 +6,5 @@ source /etc/envvars
 env
 
 exec 2>&1
-exec confd -watch=true -interval 30 -backend=etcd -node "http://$ETCD_HOST:4001" -verbose=true
+exec confd -watch=true -interval 30 -backend=etcd -node "http://$ETCD_HOST:4001" -log-level="info"
 
