@@ -20,12 +20,17 @@ RUN apt-get install -y iptables
 #Need this for ovs-ovsctl
 RUN apt-get install -y openvswitch-switch
 
+#Dnsmasq and Confd used for DNS
+RUN apt-get install -y dnsmasq 
+RUN wget -O /usr/local/bin/confd  https://github.com/kelseyhightower/confd/releases/download/v0.9.0/confd-0.9.0-linux-amd64 && \
+    chmod +x /usr/local/bin/confd
+
 #Docker client only
 RUN wget -O /usr/local/bin/docker https://get.docker.io/builds/Linux/x86_64/docker-latest && \
     chmod +x /usr/local/bin/docker
 
 #Kubernetes
-RUN wget -O - https://github.com/GoogleCloudPlatform/kubernetes/releases/download/v0.15.0/kubernetes.tar.gz| tar zx
+RUN wget -O - https://github.com/GoogleCloudPlatform/kubernetes/releases/download/v0.16.0/kubernetes.tar.gz| tar zx
 RUN tar -xvf /kubernetes/server/kubernetes-server-linux-amd64.tar.gz --strip-components 3 -C /usr/local/bin 
 
 #Manifests
@@ -41,13 +46,7 @@ ADD ovs-show.sh /ovs-show.sh
 ADD aliases /root/.aliases
 RUN echo "source ~/.aliases" >> /root/.bashrc
 
-#Confd
-RUN wget -O /usr/local/bin/confd  https://github.com/kelseyhightower/confd/releases/download/v0.9.0/confd-0.9.0-linux-amd64 && \
-    chmod +x /usr/local/bin/confd
-
-#Dnsmasq
-RUN apt-get install -y dnsmasq 
-
+#Configs
 ADD etc /etc/
 
 #Add runit services
