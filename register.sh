@@ -6,18 +6,10 @@ let CPU=$CORES*1000
 
 cat <<END | kubectl create -f -
 {
-  "id": "$HOST_IP",
   "kind": "Node",
-  "apiVersion": "v1beta2",
-  "resources": {
-    "capacity": {
-      "cpu": "$CPU",
-      "memory": `free -b|grep Mem|awk '{print $2}'` 
-    }
-  },
-  "labels": {
-    "hostname": "`hostname`"
-  },
-  "externalId": "`hostname`"
+  "apiVersion": "v1beta3",
+  "metadata":{
+    "name": "$HOST_IP"
+  }
 }
 END
