@@ -8,6 +8,7 @@ then
 else
   echo "KUBERNETES_MASTER=$KUBERNETES_MASTER"
   docker run \
+         --pid=host \
          --net=host \
          -p 10250:10250 \
          --privileged=true \
