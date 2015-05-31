@@ -1,7 +1,5 @@
 #!/bin/bash
 
-sv start register  || exit 1
-
 source /etc/envvars
 
 IP=`ip route get 1 | awk '{print $NF;exit}'`
