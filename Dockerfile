@@ -37,7 +37,6 @@ RUN tar -xvf /kubernetes/server/kubernetes-server-linux-amd64.tar.gz --strip-com
 RUN mkdir -p /etc/kubernetes/manifests
 
 #OVS Scripts
-ADD register.sh /register.sh
 ADD ovs-sync.sh /ovs-sync.sh
 ADD ovs-remote.sh /ovs-remote.sh
 ADD ovs-show.sh /ovs-show.sh

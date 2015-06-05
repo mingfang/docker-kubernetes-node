@@ -1,7 +1,0 @@
-#!/bin/bash
-
-source /etc/envvars
-env
-
-exec 2>&1
-while true; do /register.sh; sleep 30; done;
