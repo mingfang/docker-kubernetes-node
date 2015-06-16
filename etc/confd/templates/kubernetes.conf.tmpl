@@ -1,4 +1,4 @@
 {{range gets "/registry/services/specs/default/*"}}
   {{$service := json .Value}}
-  {{$service.spec.portalIP}} {{$service.metadata.name}}
+  {{$service.spec.clusterIP}} {{$service.metadata.name}}
 {{end}}
