@@ -43,10 +43,6 @@ ip route add 10.244.0.0/16 dev ${DOCKER_BRIDGE} scope link src ${HOST_IP}
 # add oflow rules, because we do not want to use stp
 ovs-ofctl -O OpenFlow13 del-flows ${OVS_SWITCH}
 
-# flow to self
-ovs-ofctl -O OpenFlow13 add-flow ${OVS_SWITCH} "table=0,ip,in_port=10,nw_dst=10.244.$LAST.0/24,actions=output:9"
-ovs-ofctl -O OpenFlow13 add-flow ${OVS_SWITCH} "table=0,arp,in_port=10,nw_dst=10.244.$LAST.0/24,actions=output:9"
-
-# all other flows are done in ovs-sync.sh
+# all flows are done with ovs-sync.sh
 
 ./ovs-show.sh
