@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Originally from https://gist.github.com/noteed/8656989#file-shared-docker-network-sh
-# This article was the most useful I found on the topic http://translate.google.com/translate?hl=en&sl=zh-CN&tl=en&u=http%3A%2F%2Faresy.blog.51cto.com%2F5100031%2F1600956
-
 echo "Make sure bridge-utils and openvswitch-switch are installed."
 echo "apt-get update && apt-get install -y bridge-utils openvswitch-switch"
 echo 
@@ -14,51 +11,42 @@ LAST="${HOST_IP##*.}"
 # The subnet for all Docker containers on this host
 BRIDGE_ADDRESS=10.244.$LAST.1/24
 
-# Name of the bridge (should match /etc/default/docker).
 DOCKER_BRIDGE=kbr0
+OVS_SWITCH=obr0
+DOCKER_OVS_TUN=tun0
+TUNNEL_BASE=gre
 
-echo "HOST_IP=$HOST_IP"
-echo "LAST=$LAST"
-echo "BRIDGE_ADDRESS=$BRIDGE_ADDRESS"
-echo "DOCKER_BRIDGE=$DOCKER_BRIDGE"
-
-# Docker bridge
-
-# Deactivate the DOCKER_BRIDGE bridge
-ip link set $DOCKER_BRIDGE down
-brctl delbr $DOCKER_BRIDGE
-
-# Add the DOCKER_BRIDGE bridge
-brctl addbr $DOCKER_BRIDGE
+# create new docker bridge
+ip link set dev ${DOCKER_BRIDGE} down || true
+brctl delbr ${DOCKER_BRIDGE} || true
+brctl addbr ${DOCKER_BRIDGE}
+ip link set dev ${DOCKER_BRIDGE} up
+#ifconfig ${DOCKER_BRIDGE} ${CONTAINER_ADDR} netmask ${CONTAINER_NETMASK} up
 ip a add $BRIDGE_ADDRESS dev $DOCKER_BRIDGE
-ip link set $DOCKER_BRIDGE up
 
-# OVS Bridge
+# add ovs bridge
+ovs-vsctl del-br ${OVS_SWITCH} || true
+ovs-vsctl add-br ${OVS_SWITCH} -- set Bridge ${OVS_SWITCH} fail-mode=secure
+ovs-vsctl set bridge ${OVS_SWITCH} protocols=OpenFlow13
+ovs-vsctl del-port ${OVS_SWITCH} ${TUNNEL_BASE}0 || true
+ovs-vsctl add-port ${OVS_SWITCH} ${TUNNEL_BASE}0 -- set Interface ${TUNNEL_BASE}0 type=${TUNNEL_BASE} options:remote_ip="flow" options:key="flow" ofport_request=10
 
-OVS_BRIDGE=obr0
-echo "OVS_BRIDGE=$OVS_BRIDGE"
+# add tun device
+ovs-vsctl del-port ${OVS_SWITCH} ${DOCKER_OVS_TUN} || true
+ovs-vsctl add-port ${OVS_SWITCH} ${DOCKER_OVS_TUN} -- set Interface ${DOCKER_OVS_TUN} type=internal ofport_request=9
+brctl addif ${DOCKER_BRIDGE} ${DOCKER_OVS_TUN}
+ip link set ${DOCKER_OVS_TUN} up
 
-# Delete the Open vSwitch bridge
-ovs-vsctl del-br $OVS_BRIDGE
-# Add the OVS_BRIDGE Open vSwitch bridge
-ovs-vsctl add-br $OVS_BRIDGE
-# Enable STP
-ovs-vsctl set bridge $OVS_BRIDGE stp_enable=true
-# Add the OVS_BRIDGE bridge to DOCKER_BRIDGE bridge
-brctl addif $DOCKER_BRIDGE $OVS_BRIDGE
+# add ip route rules such that all pod traffic flows through docker bridge and consequently to the gre tunnels
+ip route add 10.244.0.0/16 dev ${DOCKER_BRIDGE} scope link src ${HOST_IP}
 
-# Create GRE
-ovs-vsctl add-port $OVS_BRIDGE tep0 -- set interface tep0 type=internal
+# add oflow rules, because we do not want to use stp
+ovs-ofctl -O OpenFlow13 del-flows ${OVS_SWITCH}
 
-# Tunnel End Point, connects to the host and MUST have IP to work
-ip addr add 192.168.11.$LAST/24 dev tep0
-ip link set dev tep0 up
+# flow to self
+ovs-ofctl -O OpenFlow13 add-flow ${OVS_SWITCH} "table=0,ip,in_port=10,nw_dst=10.244.$LAST.0/24,actions=output:9"
+ovs-ofctl -O OpenFlow13 add-flow ${OVS_SWITCH} "table=0,arp,in_port=10,nw_dst=10.244.$LAST.0/24,actions=output:9"
 
-# Enables routing to other hosts, critical
-ip route add 10.244.0.0/16 dev tep0 
+# all other flows are done in ovs-sync.sh
 
 ./ovs-show.sh
-
-# Restart Docker daemon to use the new DOCKER_BRIDGE
-echo -e "\nUse the OVS bridge by setting DOCKER_OPTS=\"--bridge=$DOCKER_BRIDGE --mtu=1420\" in file /etc/defaults/docker."
-echo "Then restart Docker e.g. service docker restart"

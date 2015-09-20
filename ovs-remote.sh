@@ -1,7 +1,7 @@
 #!/bin/bash
 
-OVS_BRIDGE=obr0
-echo "OVS_BRIDGE=$OVS_BRIDGE"
+OVS_SWITCH=obr0
+echo "OVS_SWITCH=$OVS_SWITCH"
 
 REMOTE_IP=$2
 echo "REMOTE_IP=$REMOTE_IP"
@@ -21,19 +21,25 @@ then
 fi
 
 # Use last octet of remote to create gre port name
-GRE="gre${REMOTE_IP##*.}"
+GRE="10.244.${REMOTE_IP##*.}.0/24"
 echo "GRE=$GRE" 
+
+# cookie
+COOKIE=${REMOTE_IP//./}
 
 if [ "add" = "$1" ]
 then
-  # Create the tunnel to the other host and attach it to the OVS_BRIDGE bridge
-  CMD="ovs-vsctl add-port $OVS_BRIDGE $GRE -- set interface $GRE type=gre options:remote_ip=$REMOTE_IP" && echo -e "\n$CMD" && eval $CMD
+  # Create the tunnel to the other host and attach it to the OVS_SWITCH bridge
+  ovs-ofctl -O OpenFlow13 add-flow ${OVS_SWITCH} "cookie=$COOKIE,table=0,in_port=9,ip,nw_dst=${GRE},actions=set_field:${REMOTE_IP}->tun_dst,output:10"
+  ovs-ofctl -O OpenFlow13 add-flow ${OVS_SWITCH} "cookie=$COOKIE,table=0,in_port=9,arp,nw_dst=${GRE},actions=set_field:${REMOTE_IP}->tun_dst,output:10"
 fi
 
 if [ "del" = "$1" ]
 then
-  # Delete port
-  CMD="ovs-vsctl del-port $OVS_BRIDGE $GRE" && echo -e "\n$CMD" && eval $CMD
+  # Delete flow using cookie, note wierd /-1 syntax
+  ovs-ofctl -O OpenFlow13 del-flows ${OVS_SWITCH} cookie=${COOKIE}/-1
 fi
 
-CMD="ovs-vsctl show" && echo -e "\n$CMD" && eval $CMD
+CMD="ovs-ofctl -O OpenFlow13 dump-ports-desc obr0" && echo -e "\n$CMD" && eval $CMD
+CMD="ovs-ofctl -O OpenFlow13 dump-flows obr0" && echo -e "\n$CMD" && eval $CMD
+
