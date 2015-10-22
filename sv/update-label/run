@@ -7,4 +7,4 @@ IP=`ip route get 1 | awk '{print $NF;exit}'`
 HOST=`hostname -s`
 
 exec 2>&1
-while true; do kubectl label nodes ${IP} --overwrite host=${HOST}; sleep 60; done;
+while true; do kubectl label nodes ${IP} --overwrite host=${HOST} ${LABELS}; sleep 60; done;
