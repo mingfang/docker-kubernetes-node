@@ -9,6 +9,7 @@ KUBELET_OPTS="--address=0.0.0.0 \
 --port=10250 \
 --api_servers=$KUBERNETES_MASTER \
 --config=/etc/kubernetes/manifests \
+--v=2 \
 --logtostderr=true"
 
 env
