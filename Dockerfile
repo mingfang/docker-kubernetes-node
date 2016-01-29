@@ -22,7 +22,7 @@ RUN apt-get install -y openvswitch-switch
 
 #Dnsmasq and Confd used for DNS
 RUN apt-get install -y dnsmasq 
-RUN wget -O /usr/local/bin/confd  https://github.com/kelseyhightower/confd/releases/download/v0.10.0/confd-0.10.0-linux-amd64 && \
+RUN wget -O /usr/local/bin/confd  https://github.com/kelseyhightower/confd/releases/download/v0.11.0/confd-0.11.0-linux-amd64 && \
     chmod +x /usr/local/bin/confd
 
 #Docker client only
@@ -30,7 +30,7 @@ RUN wget -O /usr/local/bin/docker https://get.docker.io/builds/Linux/x86_64/dock
     chmod +x /usr/local/bin/docker
 
 #Kubernetes
-RUN wget -O - https://github.com/GoogleCloudPlatform/kubernetes/releases/download/v1.1.4/kubernetes.tar.gz| tar zx
+RUN wget -O - https://github.com/GoogleCloudPlatform/kubernetes/releases/download/v1.1.7/kubernetes.tar.gz| tar zx
 RUN tar -xvf /kubernetes/server/kubernetes-server-linux-amd64.tar.gz --strip-components 3 -C /usr/local/bin 
 
 #Manifests
