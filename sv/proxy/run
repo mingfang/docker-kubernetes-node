@@ -3,7 +3,9 @@
 source /etc/envvars
 env
 
+IP=`ip route get 1 | awk '{print $NF;exit}'`
 KUBE_PROXY_OPTS="--master=$KUBERNETES_MASTER \
+--hostname_override=$IP \
 --logtostderr=true"
 
 exec 2>&1
