@@ -6,6 +6,9 @@ env
 IP=`ip route get 1 | awk '{print $NF;exit}'`
 KUBE_PROXY_OPTS="--master=$KUBERNETES_MASTER \
 --hostname_override=$IP \
+--proxy-mode=iptables \
+--resource-container="" \
+--v=3 \
 --logtostderr=true"
 
 exec 2>&1
