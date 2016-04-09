@@ -30,7 +30,7 @@ RUN wget -O /usr/local/bin/docker https://get.docker.io/builds/Linux/x86_64/dock
     chmod +x /usr/local/bin/docker
 
 #Kubernetes
-RUN wget -O - https://github.com/GoogleCloudPlatform/kubernetes/releases/download/v1.2.1/kubernetes.tar.gz| tar zx
+RUN wget -O - https://github.com/GoogleCloudPlatform/kubernetes/releases/download/v1.2.2/kubernetes.tar.gz| tar zx
 RUN tar -xvf /kubernetes/server/kubernetes-server-linux-amd64.tar.gz --strip-components 3 -C /usr/local/bin 
 
 #Manifests
