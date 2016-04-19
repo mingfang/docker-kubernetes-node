@@ -26,8 +26,7 @@ RUN wget -O /usr/local/bin/confd  https://github.com/kelseyhightower/confd/relea
     chmod +x /usr/local/bin/confd
 
 #Docker client only
-RUN wget -O /usr/local/bin/docker https://get.docker.io/builds/Linux/x86_64/docker-latest && \
-    chmod +x /usr/local/bin/docker
+RUN wget -O - https://get.docker.com/builds/Linux/x86_64/docker-latest.tgz | tar zx -C /usr/local/bin --strip-components=1 docker/docker
 
 #Kubernetes
 RUN wget -O - https://github.com/GoogleCloudPlatform/kubernetes/releases/download/v1.2.2/kubernetes.tar.gz| tar zx
