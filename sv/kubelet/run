@@ -11,6 +11,7 @@ KUBELET_OPTS="--address=0.0.0.0 \
 --config=/etc/kubernetes/manifests \
 --containerized=false \
 --resource-container="" \
+--registry-qps=0 \
 --v=2 \
 --logtostderr=true"
 
