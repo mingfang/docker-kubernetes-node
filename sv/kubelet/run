@@ -12,6 +12,7 @@ KUBELET_OPTS="--address=0.0.0.0 \
 --containerized=false \
 --resource-container="" \
 --registry-qps=0 \
+--hairpin-mode=none \
 --v=2 \
 --logtostderr=true"
 
