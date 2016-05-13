@@ -6,4 +6,4 @@ keys = [
 ]
 
 check_cmd = "dnsmasq --test"
-reload_cmd = "killall -HUP dnsmasq || true"
+reload_cmd = "killall -SIGHUP dnsmasq || true"
