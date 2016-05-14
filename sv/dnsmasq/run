@@ -6,5 +6,4 @@ source /etc/envvars
 env
 
 exec 2>&1
-exec dnsmasq --no-daemon
-
+exec dnsmasq --keep-in-foreground --log-facility -
