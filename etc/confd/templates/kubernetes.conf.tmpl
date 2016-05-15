@@ -2,3 +2,7 @@
   {{$service := json .Value}}
   {{$service.spec.clusterIP}} {{$service.metadata.name}}
 {{end}}
+{{range gets "/registry/pods/default/*"}}
+  {{$pod := json .Value}}
+  {{$pod.status.podIP}} {{$pod.metadata.name}}
+{{end}}

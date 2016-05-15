@@ -2,7 +2,8 @@
 src = "kubernetes.conf.tmpl"
 dest = "/etc/kubernetes_hosts"
 keys = [
-    "/registry/services/specs/default"
+    "/registry/services/specs/default",
+    "/registry/pods/default/"
 ]
 
 check_cmd = "dnsmasq --test"
