@@ -10,7 +10,8 @@ KUBELET_OPTS="--address=0.0.0.0 \
 --api_servers=$KUBERNETES_MASTER \
 --config=/etc/kubernetes/manifests \
 --containerized=false \
---resource-container="" \
+--image-gc-high-threshold=50 \
+--image-gc-low-threshold=30 \
 --registry-qps=0 \
 --hairpin-mode=none \
 --serialize-image-pulls=false \
