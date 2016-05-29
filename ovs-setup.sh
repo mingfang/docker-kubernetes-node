@@ -60,5 +60,11 @@ ip route add 10.244.0.0/16 dev tep0
 ./ovs-show.sh
 
 # Restart Docker daemon to use the new DOCKER_BRIDGE
-echo -e "\nUse the OVS bridge by setting DOCKER_OPTS=\"--bridge=$DOCKER_BRIDGE --mtu=1420\" in file /etc/defaults/docker."
-echo "Then restart Docker e.g. service docker restart"
+echo -e "\nUse the OVS bridge by setting DOCKER_OPTS=\"--bridge=$DOCKER_BRIDGE --mtu=1420\" in file /etc/default/docker."
+echo "
+#/etc/systemd/system/docker.service
+[Service]
+ExecStart=
+ExecStart=/usr/bin/docker daemon -H fd:// --bridge=kbr0 --mtu=1420 --insecure-registry=0.0.0.0/0  --iptables=true --storage-driver=overlay
+"
+echo "Then restart Docker e.g. service docker restart or systemctl daemon-reload && systemctl start docker"
