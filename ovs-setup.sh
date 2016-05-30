@@ -46,6 +46,8 @@ ovs-vsctl add-br $OVS_BRIDGE
 ovs-vsctl set bridge $OVS_BRIDGE stp_enable=true
 # Add the OVS_BRIDGE bridge to DOCKER_BRIDGE bridge
 brctl addif $DOCKER_BRIDGE $OVS_BRIDGE
+#enable OVS_BRIDGE
+ip link set $OVS_BRIDGE up
 
 # Create GRE
 ovs-vsctl add-port $OVS_BRIDGE tep0 -- set interface tep0 type=internal
