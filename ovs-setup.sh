@@ -12,7 +12,7 @@ HOST_IP=`ip route get 1 | awk '{print $NF;exit}'`
 LAST="${HOST_IP##*.}"
 
 # The subnet for all Docker containers on this host
-BRIDGE_ADDRESS=172.27.$LAST.1/24
+BRIDGE_ADDRESS=10.244.$LAST.1/24
 
 # Name of the bridge (should match /etc/default/docker).
 DOCKER_BRIDGE=kbr0
@@ -57,7 +57,7 @@ ip addr add 192.168.11.$LAST/24 dev tep0
 ip link set dev tep0 up
 
 # Enables routing to other hosts, critical
-ip route add 172.27.0.0/16 dev tep0 
+ip route add 10.244.0.0/16 dev tep0 
 
 ./ovs-show.sh
 
@@ -67,6 +67,6 @@ echo "
 #/etc/systemd/system/docker.service
 [Service]
 ExecStart=
-ExecStart=/usr/bin/docker daemon --bridge=kbr0 --mtu=1420 --insecure-registry=0.0.0.0/0  --iptables=true --storage-driver=overlay
+ExecStart=/usr/bin/docker daemon --bridge=kbr0 --mtu=1420 --insecure-registry=0.0.0.0/0  --iptables=true --storage-driver=zfs
 "
 echo "Then restart Docker e.g. service docker restart or systemctl daemon-reload && systemctl start docker"
