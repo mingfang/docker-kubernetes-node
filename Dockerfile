@@ -8,30 +8,34 @@ RUN echo "export PS1='\e[1;31m\]\u@\h:\w\\$\[\e[0m\] '" >> /root/.bashrc
 RUN apt-get update
 
 # Runit
-RUN apt-get install -y runit 
+RUN apt-get install -y --no-install-recommends runit 
 CMD export > /etc/envvars && /usr/sbin/runsvdir-start
 RUN echo 'export > /etc/envvars' >> /root/.bashrc
 
 # Utilities
-RUN apt-get install -y vim less net-tools inetutils-ping wget curl git telnet nmap socat dnsutils netcat tree htop unzip sudo software-properties-common jq psmisc
+RUN apt-get install -y --no-install-recommends vim less net-tools inetutils-ping wget curl git telnet nmap socat dnsutils netcat tree htop unzip sudo software-properties-common jq psmisc
 
 #Proxy needs iptables
-RUN apt-get install -y iptables
+RUN apt-get install -y --no-install-recommends iptables
 
 #Need this for ovs-ovsctl
-RUN apt-get install -y openvswitch-switch
+RUN apt-get install -y --no-install-recommends openvswitch-switch
 
 #Dnsmasq and Confd used for DNS
-RUN apt-get install -y dnsmasq 
+RUN apt-get install -y --no-install-recommends dnsmasq 
 RUN wget -O /usr/local/bin/confd  https://github.com/kelseyhightower/confd/releases/download/v0.11.0/confd-0.11.0-linux-amd64 && \
     chmod +x /usr/local/bin/confd
+
+#ZFS
+RUN apt-get install -y --no-install-recommends zfsutils-linux
 
 #Docker client only
 RUN wget -O - https://get.docker.com/builds/Linux/x86_64/docker-latest.tgz | tar zx -C /usr/local/bin --strip-components=1 docker/docker
 
 #Kubernetes
-RUN wget -O - https://github.com/GoogleCloudPlatform/kubernetes/releases/download/v1.3.4/kubernetes.tar.gz| tar zx
-RUN tar -xvf /kubernetes/server/kubernetes-server-linux-amd64.tar.gz --strip-components 3 -C /usr/local/bin 
+RUN wget -O - https://github.com/GoogleCloudPlatform/kubernetes/releases/download/v1.3.4/kubernetes.tar.gz| tar zx && \
+    tar -xvf /kubernetes/server/kubernetes-server-linux-amd64.tar.gz --strip-components 3 -C /usr/local/bin && \
+    rm -rf /kubernetes
 
 #Manifests
 RUN mkdir -p /etc/kubernetes/manifests
