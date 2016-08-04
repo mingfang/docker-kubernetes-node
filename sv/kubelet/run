@@ -3,6 +3,7 @@
 source /etc/envvars
 
 IP=`ip route get 1 | awk '{print $NF;exit}'`
+HOST=`hostname -s`
 KUBELET_OPTS="--address=0.0.0.0 \
 --hostname_override=$IP \
 --cluster_dns=$IP \
@@ -15,6 +16,7 @@ KUBELET_OPTS="--address=0.0.0.0 \
 --registry-qps=0 \
 --hairpin-mode=none \
 --serialize-image-pulls=false \
+--node-labels=host=${HOST},${LABELS} \
 --v=2 \
 --logtostderr=true"
 
