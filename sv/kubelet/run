@@ -17,6 +17,7 @@ KUBELET_OPTS="--address=0.0.0.0 \
 --hairpin-mode=none \
 --serialize-image-pulls=false \
 --node-labels=host=${HOST},${LABELS} \
+--allow-privileged=true \
 --v=2 \
 --logtostderr=true"
 
