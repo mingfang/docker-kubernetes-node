@@ -33,9 +33,9 @@ RUN apt-get install -y --no-install-recommends zfsutils-linux
 RUN wget -O - https://get.docker.com/builds/Linux/x86_64/docker-latest.tgz | tar zx -C /usr/local/bin --strip-components=1 docker/docker
 
 #Kubernetes
-RUN wget -O - https://github.com/GoogleCloudPlatform/kubernetes/releases/download/v1.3.4/kubernetes.tar.gz| tar zx && \
-    tar -xvf /kubernetes/server/kubernetes-server-linux-amd64.tar.gz --strip-components 3 -C /usr/local/bin && \
-    rm -rf /kubernetes
+RUN wget -P /usr/local/bin https://storage.googleapis.com/kubernetes-release/release/v1.3.4/bin/linux/amd64/kubelet
+RUN wget -P /usr/local/bin https://storage.googleapis.com/kubernetes-release/release/v1.3.4/bin/linux/amd64/kube-proxy
+RUN chmod +x /usr/local/bin/kube*
 
 #Manifests
 RUN mkdir -p /etc/kubernetes/manifests
