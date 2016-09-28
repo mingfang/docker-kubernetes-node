@@ -3,6 +3,7 @@ src = "kubernetes.conf.tmpl"
 dest = "/etc/kubernetes_hosts"
 keys = [
     "/registry/services/specs/default",
+    "/registry/services/endpoints/default",
     "/registry/pods/default/"
 ]
 
