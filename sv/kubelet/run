@@ -21,6 +21,8 @@ KUBELET_OPTS="--address=0.0.0.0 \
 --v=2 \
 --logtostderr=true"
 
-env
+#needed by NFS client
+rpcbind
+
 exec 2>&1
 exec kubelet ${KUBELET_OPTS}
