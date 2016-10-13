@@ -8,7 +8,7 @@ KUBE_PROXY_OPTS="--master=$KUBERNETES_MASTER \
 --hostname_override=$IP \
 --proxy-mode=iptables \
 --resource-container="" \
---v=3 \
+--v=2 \
 --logtostderr=true"
 
 exec 2>&1
