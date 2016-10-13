@@ -24,6 +24,7 @@ else
          -v /var/lib/docker/:/var/lib/docker:rw \
          -v /var/lib/kubelet/:/var/lib/kubelet:rw,shared \
          -v /var/run/openvswitch/db.sock:/var/run/openvswitch/db.sock \
+         -v /var/log:/var/log \
          -d kubernetes-node
 fi
 
