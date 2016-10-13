@@ -1,7 +1,7 @@
 {{range gets "/registry/services/specs/default/*"}}
   {{$service := json .Value}}
   {{if ne $service.spec.clusterIP "None"}}
-    {{$service.spec.clusterIP}} {{$service.metadata.name}} {{$service.metadata.name}}.{{$service.metadata.namespace}}.srv
+    {{$service.spec.clusterIP}} {{$service.metadata.name}} {{$service.metadata.name}}.{{$service.metadata.namespace}}.svc
   {{else}}
     {{$endpointPath := printf "/registry/services/endpoints/default/%s" $service.metadata.name}}
     {{$endpoint := json (getv $endpointPath)}}
