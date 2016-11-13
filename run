@@ -19,12 +19,11 @@ else
          --net=host \
          --pid=host \
          --privileged=true \
-         -v /sys:/sys:rw \
+         -v /sys:/sys:ro \
          -v /:/rootfs:ro \
-         -v /var/run/docker.sock:/run/docker.sock \
-         -v /var/lib/docker/:/var/lib/docker:rw \
+         -v /var/run:/var/run:rw \
+         -v /var/lib/docker/:/var/lib/docker:ro \
          -v /var/lib/kubelet/:/var/lib/kubelet:rw,shared \
-         -v /var/run/openvswitch/db.sock:/var/run/openvswitch/db.sock \
          -v /var/log:/var/log \
          -d kubernetes-node
 fi

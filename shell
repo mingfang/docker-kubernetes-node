@@ -7,6 +7,10 @@ then
   echo "KUBERNETES_MASTER not set"
 else
   echo "KUBERNETES_MASTER=$KUBERNETES_MASTER"
+  mkdir -p /var/lib/kubelet
+  mount --bind /var/lib/kubelet /var/lib/kubelet
+  mount --make-shared /var/lib/kubelet
+  rpcinfo
   docker run \
          -e LABELS=${LABELS} \
          -p 10250:10250 \
@@ -15,13 +19,11 @@ else
          --net=host \
          --pid=host \
          --privileged=true \
-         -v /sys:/sys:rw \
-         -v /var/run:/var/run:rw \
+         -v /sys:/sys:ro \
          -v /:/rootfs:ro \
-         -v /var/run/docker.sock:/run/docker.sock \
-         -v /var/lib/docker/:/var/lib/docker:rw \
-         -v /var/lib/kubelet/:/var/lib/kubelet:rw \
-         -v /var/run/openvswitch/db.sock:/var/run/openvswitch/db.sock \
+         -v /var/run:/var/run:rw \
+         -v /var/lib/docker/:/var/lib/docker:ro \
+         -v /var/lib/kubelet/:/var/lib/kubelet:rw,shared \
          -it kubernetes-node bash
 fi
 
