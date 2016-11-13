@@ -1,0 +1,6 @@
+{{range gets "/*"}}
+{{$pod := json .Value}}
+{{if $pod.status.podIP }}
+{{$pod.status.podIP}} {{$pod.metadata.name}}
+{{end}}
+{{end}}

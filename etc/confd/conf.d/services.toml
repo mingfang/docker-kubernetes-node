@@ -1,0 +1,8 @@
+[template]
+src = "services.tmpl"
+dest = "/etc/confd/hosts/services"
+prefix = "/registry/services"
+keys = [
+    "/specs/default",
+    "/endpoints/default"
+]

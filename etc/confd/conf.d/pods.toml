@@ -1,0 +1,7 @@
+[template]
+src = "pods.tmpl"
+dest = "/etc/confd/hosts/pods"
+prefix = "/registry/pods/default"
+keys = [
+    "/"
+]
