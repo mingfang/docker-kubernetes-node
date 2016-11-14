@@ -22,7 +22,7 @@ else
          -v /sys:/sys:ro \
          -v /:/rootfs:ro \
          -v /var/run:/var/run:rw \
-         -v /var/lib/docker/:/var/lib/docker:ro \
+         -v /var/lib/docker/:/var/lib/docker:rw \
          -v /var/lib/kubelet/:/var/lib/kubelet:rw,shared \
          -v /var/log:/var/log \
          -d kubernetes-node
