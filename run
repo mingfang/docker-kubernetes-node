@@ -7,6 +7,7 @@ then
   echo "KUBERNETES_MASTER not set"
 else
   echo "KUBERNETES_MASTER=$KUBERNETES_MASTER"
+  echo "LABELS=$LABELS"
   mkdir -p /var/lib/kubelet
   mount --bind /var/lib/kubelet /var/lib/kubelet
   mount --make-shared /var/lib/kubelet
