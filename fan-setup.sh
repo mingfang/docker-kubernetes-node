@@ -18,6 +18,7 @@ echo "OVERLAY=$OVERLAY"
 echo "DOCKER_BRIDGE=$DOCKER_BRIDGE"
 
 # Fan bridge
+fanctl down -e
 fanctl up -u $UNDERLAY -o $OVERLAY --bridge=$DOCKER_BRIDGE --dhcp
 fanctl show
 
