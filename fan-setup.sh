@@ -1,5 +1,8 @@
 #!/bin/bash
 
+echo "Stopping Docker..."
+systemctl stop docker
+
 echo "Make sure Fan Networking is installed."
 echo "apt-get update && apt-get install -y ubuntu-fan"
 echo 
@@ -27,13 +30,13 @@ fanctl show
 rm -r /var/lib/docker/network/files/local-kv.db
 
 # Restart Docker daemon to use the new DOCKER_BRIDGE
-DOCKER_OPTS="--bridge=kbr0 --fixed-cidr=$DOCKER_CIDR --mtu=1450 --iptables=false --insecure-registry=0.0.0.0/0"
-echo -e "\nUse the Fan bridge by setting DOCKER_OPTS=\"$DOCKER_OPTS\" in file /etc/default/docker"
-echo "
-Ubuntu 16.04+
+DOCKER_OPTS="--bridge=kbr0 --fixed-cidr=$DOCKER_CIDR --mtu=1450 --iptables=false --insecure-registry=0.0.0.0/0 --storage-driver=zfs"
+
 #/etc/systemd/system/docker.service.d/docker.conf
-[Service]
-ExecStart=
-ExecStart=/usr/bin/dockerd $DOCKER_OPTS --storage-driver=zfs
-"
-echo "Then restart Docker e.g. service docker restart or systemctl daemon-reload && systemctl start docker"
+mkdir -p /etc/systemd/system/docker.service.d
+printf "[Service]\nExecStart=\nExecStart=/usr/bin/dockerd $DOCKER_OPTS" > /etc/systemd/system/docker.service.d/docker.conf
+
+echo "Restarting Docker..."
+systemctl daemon-reload
+systemctl restart docker
+docker info
