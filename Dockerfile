@@ -19,9 +19,6 @@ RUN apt-get install -y --no-install-recommends vim less net-tools inetutils-ping
 #Proxy needs iptables
 RUN apt-get install -y --no-install-recommends iptables
 
-#Need this for ovs-ovsctl
-RUN apt-get install -y --no-install-recommends openvswitch-switch
-
 #Dnsmasq and Confd used for DNS
 RUN apt-get install -y --no-install-recommends dnsmasq 
 RUN wget -O /usr/local/bin/confd  https://github.com/kelseyhightower/confd/releases/download/v0.11.0/confd-0.11.0-linux-amd64 && \
@@ -43,15 +40,6 @@ RUN chmod +x /usr/local/bin/kube*
 
 #Manifests
 RUN mkdir -p /etc/kubernetes/manifests
-
-#OVS Scripts
-ADD ovs-sync.sh /ovs-sync.sh
-ADD ovs-remote.sh /ovs-remote.sh
-ADD ovs-show.sh /ovs-show.sh
-
-#Aliases
-ADD aliases /root/.aliases
-RUN echo "source ~/.aliases" >> /root/.bashrc
 
 #Configs
 ADD etc /etc/
