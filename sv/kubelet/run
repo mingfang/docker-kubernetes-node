@@ -14,7 +14,7 @@ KUBELET_OPTS="--address=0.0.0.0 \
 --image-gc-high-threshold=50 \
 --image-gc-low-threshold=30 \
 --registry-qps=0 \
---hairpin-mode=none \
+--hairpin-mode=hairpin-veth \
 --serialize-image-pulls=false \
 --node-labels=host=${HOST},${LABELS} \
 --allow-privileged=true \
