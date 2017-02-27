@@ -20,7 +20,7 @@ else
          --net=host \
          --pid=host \
          --privileged=true \
-         -v /sys:/sys:ro \
+         -v /sys:/sys:rw \
          -v /:/rootfs:ro \
          -v /var/run:/var/run:rw \
          -v /var/lib/docker/:/var/lib/docker:rw \

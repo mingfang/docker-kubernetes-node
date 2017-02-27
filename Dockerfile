@@ -33,6 +33,9 @@ RUN wget -O - https://get.docker.com/builds/Linux/x86_64/docker-latest.tgz | tar
 #NFS client
 RUN apt-get install -y nfs-common
 
+#For Hairpin-veth mode
+RUN apt-get install -y ethtool
+
 #Kubernetes
 RUN wget -P /usr/local/bin https://storage.googleapis.com/kubernetes-release/release/v1.5.3/bin/linux/amd64/kubelet
 RUN wget -P /usr/local/bin https://storage.googleapis.com/kubernetes-release/release/v1.5.3/bin/linux/amd64/kube-proxy
