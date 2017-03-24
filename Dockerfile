@@ -37,8 +37,8 @@ RUN apt-get install -y nfs-common
 RUN apt-get install -y ethtool
 
 #Kubernetes
-RUN wget -P /usr/local/bin https://storage.googleapis.com/kubernetes-release/release/v1.5.4/bin/linux/amd64/kubelet
-RUN wget -P /usr/local/bin https://storage.googleapis.com/kubernetes-release/release/v1.5.4/bin/linux/amd64/kube-proxy
+RUN wget -P /usr/local/bin https://storage.googleapis.com/kubernetes-release/release/v1.5.5/bin/linux/amd64/kubelet
+RUN wget -P /usr/local/bin https://storage.googleapis.com/kubernetes-release/release/v1.5.5/bin/linux/amd64/kube-proxy
 RUN chmod +x /usr/local/bin/kube*
 
 #Manifests
