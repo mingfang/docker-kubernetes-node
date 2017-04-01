@@ -9,7 +9,6 @@ KUBELET_OPTS="--address=0.0.0.0 \
 --cluster_dns=$IP \
 --port=10250 \
 --api_servers=$KUBERNETES_MASTER \
---config=/etc/kubernetes/manifests \
 --containerized=false \
 --image-gc-high-threshold=50 \
 --image-gc-low-threshold=30 \
