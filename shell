@@ -7,9 +7,12 @@ then
   echo "KUBERNETES_MASTER not set"
 else
   echo "KUBERNETES_MASTER=$KUBERNETES_MASTER"
-  mkdir -p /var/lib/kubelet
-  mount --bind /var/lib/kubelet /var/lib/kubelet
-  mount --make-shared /var/lib/kubelet
+  if ! grep "/var/lib/kubelet " /proc/self/mountinfo | grep shared; then 
+    echo "Making /var/lib/kubelet shared."
+    mkdir -p /var/lib/kubelet
+    mount --bind /var/lib/kubelet /var/lib/kubelet
+    mount --make-shared /var/lib/kubelet
+  fi
   rpc.statd
   docker run \
          -e LABELS=${LABELS} \
