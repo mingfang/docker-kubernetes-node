@@ -15,7 +15,10 @@ else
     mount --make-shared /var/lib/kubelet
   fi
   rpc.statd
+ 
+  docker rm -f knode
   docker run \
+         --name knode \
          -e LABELS=${LABELS} \
          -p 10250:10250 \
          -e KUBERNETES_MASTER="http://$KUBERNETES_MASTER:8080" \
