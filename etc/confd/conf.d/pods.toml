@@ -5,3 +5,6 @@ prefix = "/registry/pods/default"
 keys = [
     "/"
 ]
+
+check_cmd = "dnsmasq --test"
+reload_cmd = "killall -SIGHUP dnsmasq || true"

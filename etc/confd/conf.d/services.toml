@@ -6,3 +6,6 @@ keys = [
     "/specs/default",
     "/endpoints/default"
 ]
+
+check_cmd = "dnsmasq --test"
+reload_cmd = "killall -SIGHUP dnsmasq || true"
