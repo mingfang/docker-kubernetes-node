@@ -6,7 +6,7 @@ env
 IP=`ip route get 1 | awk '{print $NF;exit}'`
 KUBE_PROXY_OPTS="--master=$KUBERNETES_MASTER \
 --cluster-cidr "250.0.0.0/8" \
---hostname_override=$IP \
+--hostname-override=$IP \
 --proxy-mode=iptables \
 --resource-container="" \
 --v=2 \
