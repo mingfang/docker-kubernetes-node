@@ -46,7 +46,7 @@ RUN chmod +x /usr/local/bin/kube*
 RUN apt-get install -y ceph-common
 
 #Manifests
-RUN mkdir -p /etc/kubernetes/manifests
+COPY manifests /etc/kubernetes/manifests
 
 #Configs
 ADD etc /etc/
