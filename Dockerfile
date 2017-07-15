@@ -47,7 +47,8 @@ RUN chmod +x /usr/local/bin/kube*
 #Calico
 RUN wget -N -P /opt/cni/bin https://github.com/projectcalico/cni-plugin/releases/download/v1.9.1/calico && \
     wget -N -P /opt/cni/bin https://github.com/projectcalico/cni-plugin/releases/download/v1.9.1/calico-ipam && \
-    chmod +x /opt/cni/bin/calico /opt/cni/bin/calico-ipam
+    wget -N -P /opt/cni/bin https://github.com/projectcalico/cni-plugin/releases/download/v1.9.1/portmap && \
+    chmod +x /opt/cni/bin/*
 RUN wget -O - https://github.com/containernetworking/cni/releases/download/v0.3.0/cni-v0.3.0.tgz | tar zx && \
     mv loopback /opt/cni/bin/
 RUN wget -N -P /usr/local/bin https://github.com/projectcalico/calicoctl/releases/download/v1.3.0/calicoctl && \

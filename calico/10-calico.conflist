@@ -4,7 +4,11 @@
     "plugins": [
       {
         "type": "calico",
+        "nodename": "${IP}",
         "etcd_endpoints": "${ETCD_ENDPOINTS}",
+        "kubernetes": {
+          "k8s_api_root": "${KUBERNETES_MASTER}"
+        },
         "log_level": "info",
         "ipam": {
             "type": "calico-ipam"

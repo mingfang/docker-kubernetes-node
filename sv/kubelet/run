@@ -2,7 +2,7 @@
 
 source /etc/envvars
 
-IP=`ip route get 1 | awk '{print $NF;exit}'`
+export IP=`ip route get 1 | awk '{print $NF;exit}'`
 HOST=`hostname -s`
 KUBELET_OPTS="--address=0.0.0.0 \
 --hostname_override=$IP \
@@ -25,7 +25,7 @@ KUBELET_OPTS="--address=0.0.0.0 \
 --logtostderr=true"
 
 mkdir -p /etc/cni/net.d
-envsubst < /calico/10-calico.conf > /etc/cni/net.d/10-calico.conf
+envsubst < /calico/10-calico.conflist > /etc/cni/net.d/10-calico.conflist
 envsubst < /calico/calico-node.yaml > /etc/kubernetes/manifests/calico-node.yaml
 
 exec 2>&1
