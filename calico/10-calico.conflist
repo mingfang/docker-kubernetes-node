@@ -12,9 +12,6 @@
         "log_level": "info",
         "ipam": {
             "type": "calico-ipam"
-        },
-        "policy": {
-            "type": "k8s"
         }
       },
       {
