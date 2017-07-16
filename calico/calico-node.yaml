@@ -53,7 +53,7 @@ spec:
               fieldPath: spec.nodeName
         # Auto-detect the BGP IP address.
         - name: IP
-          value: ""
+          value: "${IP}"
       securityContext:
         privileged: true
       resources:
