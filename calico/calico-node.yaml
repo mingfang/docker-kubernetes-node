@@ -48,9 +48,7 @@ spec:
           value: "true"
         # Set based on the k8s node name.
         - name: NODENAME
-          valueFrom:
-            fieldRef:
-              fieldPath: spec.nodeName
+          value: "${IP}"
         # Auto-detect the BGP IP address.
         - name: IP
           value: "${IP}"
