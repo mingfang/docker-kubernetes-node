@@ -36,7 +36,7 @@ spec:
           value: "${CLUSTER_CIDR}"
         # Enable IPIP
         - name: CALICO_IPV4POOL_IPIP
-          value: "always"
+          value: "cross-subnet"
         # Disable IPv6 on Kubernetes.
         - name: FELIX_IPV6SUPPORT
           value: "false"
