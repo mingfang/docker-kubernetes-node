@@ -45,13 +45,11 @@ RUN wget -P /usr/local/bin https://storage.googleapis.com/kubernetes-release/rel
 RUN chmod +x /usr/local/bin/kube*
 
 #Calico
-RUN wget -N -P /opt/cni/bin https://github.com/projectcalico/cni-plugin/releases/download/v1.9.1/calico && \
-    wget -N -P /opt/cni/bin https://github.com/projectcalico/cni-plugin/releases/download/v1.9.1/calico-ipam && \
-    wget -N -P /opt/cni/bin https://github.com/projectcalico/cni-plugin/releases/download/v1.9.1/portmap && \
-    chmod +x /opt/cni/bin/*
-RUN wget -O - https://github.com/containernetworking/cni/releases/download/v0.3.0/cni-v0.3.0.tgz | tar zx && \
-    mv loopback /opt/cni/bin/
-RUN wget -N -P /usr/local/bin https://github.com/projectcalico/calicoctl/releases/download/v1.3.0/calicoctl && \
+RUN wget -N -P /opt/cni/bin https://github.com/projectcalico/cni-plugin/releases/download/v1.10.0/calico && \
+    wget -N -P /opt/cni/bin https://github.com/projectcalico/cni-plugin/releases/download/v1.10.0/calico-ipam
+RUN wget -O - https://github.com/containernetworking/plugins/releases/download/v0.6.0-rc1/cni-v0.6.0-rc1.tgz | tar zx -C /opt/cni/bin
+RUN wget -N -P /usr/local/bin https://github.com/projectcalico/calicoctl/releases/download/v1.4.0/calicoctl
+RUN chmod +x /opt/cni/bin/* && \
     chmod +x /usr/local/bin/calicoctl
 COPY calico /calico
  
