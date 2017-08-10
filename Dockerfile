@@ -17,7 +17,7 @@ CMD export > /etc/envvars && /usr/sbin/runsvdir-start
 RUN apt-get install -y --no-install-recommends vim less net-tools inetutils-ping wget curl git telnet nmap socat dnsutils netcat tree htop unzip sudo software-properties-common jq psmisc iproute python ssh rsync gettext-base
 
 #Proxy needs iptables
-RUN apt-get install -y --no-install-recommends iptables
+RUN apt-get install -y --no-install-recommends iptables conntrack
 
 #Dnsmasq and Confd used for DNS
 RUN apt-get install -y --no-install-recommends dnsmasq 
