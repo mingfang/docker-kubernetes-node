@@ -24,9 +24,17 @@ KUBELET_OPTS="--address=0.0.0.0 \
 --v=2 \
 --logtostderr=true"
 
+#configure calico
 mkdir -p /etc/cni/net.d
 envsubst < /calico/10-calico.conflist > /etc/cni/net.d/10-calico.conflist
 envsubst < /calico/calico-node.yaml > /etc/kubernetes/manifests/calico-node.yaml
+
+#setup cgroups
+for cgroup in /sys/fs/cgroup/*; do
+  if [ -d $cgroup ]; then
+    mkdir -p $cgroup/kubepods
+  fi
+done
 
 exec 2>&1
 exec kubelet ${KUBELET_OPTS}

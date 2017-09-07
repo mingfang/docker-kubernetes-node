@@ -7,6 +7,7 @@ then
   echo "KUBERNETES_MASTER not set"
 else
   echo "KUBERNETES_MASTER=$KUBERNETES_MASTER"
+  echo "LABELS=$LABELS"
   if ! grep "/var/lib/kubelet " /proc/self/mountinfo | grep shared; then 
     echo "Making /var/lib/kubelet shared."
     mkdir -p /var/lib/kubelet
@@ -14,19 +15,25 @@ else
     mount --make-shared /var/lib/kubelet
   fi
   rpc.statd
+ 
+  docker rm -f knode
   docker run \
+         --name knode \
          -e LABELS=${LABELS} \
          -p 10250:10250 \
          -e KUBERNETES_MASTER="http://$KUBERNETES_MASTER:8080" \
          -e ETCD_HOST=$KUBERNETES_MASTER \
+         -e ETCD_ENDPOINTS="http://$KUBERNETES_MASTER:4001" \
+         -e CLUSTER_CIDR="10.0.0.0/16" \
          --net=host \
          --pid=host \
          --privileged=true \
-         -v /sys:/sys:ro \
+         -v /sys:/sys:rw \
          -v /:/rootfs:ro \
          -v /var/run:/var/run:rw \
          -v /var/lib/docker/:/var/lib/docker:rw \
          -v /var/lib/kubelet/:/var/lib/kubelet:rw,shared \
+         -v /var/log:/var/log \
          -it kubernetes-node bash
 fi
 
