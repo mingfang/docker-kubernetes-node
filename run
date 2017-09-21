@@ -24,7 +24,7 @@ else
          -e KUBERNETES_MASTER="http://$KUBERNETES_MASTER:8080" \
          -e ETCD_HOST=$KUBERNETES_MASTER \
          -e ETCD_ENDPOINTS="http://$KUBERNETES_MASTER:4001" \
-         -e CLUSTER_CIDR="10.0.0.0/16" \
+         -e CLUSTER_CIDR="250.0.0.0/8" \
          --net=host \
          --pid=host \
          --privileged=true \
