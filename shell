@@ -15,6 +15,7 @@ else
     mount --make-shared /var/lib/kubelet
   fi
   rpc.statd
+  swapoff -a
  
   docker rm -f knode
   docker run \
