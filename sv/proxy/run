@@ -1,16 +1,18 @@
 #!/bin/bash
 
 source /etc/envvars
-env
 
 IP=`ip route get 1 | awk '{print $NF;exit}'`
-KUBE_PROXY_OPTS="--master=$KUBERNETES_MASTER \
+KUBE_PROXY_OPTS="\
 --cluster-cidr "$CLUSTER_CIDR" \
 --hostname-override=$IP \
 --proxy-mode=iptables \
---resource-container="" \
 --v=2 \
+--kubeconfig=/etc/kubernetes/proxy-kubeconfig.yml \
 --logtostderr=true"
+
+mkdir -p /etc/kubernetes
+cat /etc/template/kubeconfig.yml | envsubst > /etc/kubernetes/proxy-kubeconfig.yml
 
 exec 2>&1
 exec kube-proxy ${KUBE_PROXY_OPTS}

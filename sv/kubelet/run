@@ -8,7 +8,6 @@ KUBELET_OPTS="--address=0.0.0.0 \
 --hostname_override=$IP \
 --cluster_dns=$IP \
 --port=10250 \
---api_servers=$KUBERNETES_MASTER \
 --containerized=false \
 --image-gc-high-threshold=50 \
 --image-gc-low-threshold=30 \
@@ -18,10 +17,14 @@ KUBELET_OPTS="--address=0.0.0.0 \
 --node-labels=host=${HOST},${LABELS} \
 --allow-privileged=true \
 --pod-manifest-path=/etc/kubernetes/manifests \
---kube-reserved=cpu=500m,memory=5Mi \
---system-reserved=cpu=100m,memory=1Mi \
+--kube-reserved=cpu=500m,memory=20Mi \
+--system-reserved=cpu=100m,memory=10Mi \
 --v=2 \
---logtostderr=true"
+--logtostderr=true \
+--cloud-config="" \ 
+--cloud-provider="" \ 
+--kubeconfig=/etc/kubernetes/kubelet-kubeconfig.yml \
+"
 
 #setup cgroups
 for cgroup in /sys/fs/cgroup/*; do
@@ -29,6 +32,9 @@ for cgroup in /sys/fs/cgroup/*; do
     mkdir -p $cgroup/kubepods
   fi
 done
+
+mkdir -p /etc/kubernetes
+cat /etc/template/kubeconfig.yml | envsubst > /etc/kubernetes/kubelet-kubeconfig.yml
 
 exec 2>&1
 exec kubelet ${KUBELET_OPTS}

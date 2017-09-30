@@ -27,9 +27,6 @@ RUN wget -O /usr/local/bin/confd  https://github.com/kelseyhightower/confd/relea
 #ZFS
 RUN apt-get install -y --no-install-recommends zfsutils-linux
 
-#Docker client only
-RUN wget -O - https://get.docker.com/builds/Linux/x86_64/docker-latest.tgz | tar zx -C /usr/local/bin --strip-components=1 docker/docker
-
 #NFS client
 RUN apt-get install -y nfs-common
 
@@ -40,12 +37,14 @@ RUN apt-get install -y ceph-common
 RUN apt-get install -y ethtool
 
 #Kubernetes
-RUN wget -P /usr/local/bin https://storage.googleapis.com/kubernetes-release/release/v1.7.6/bin/linux/amd64/kubelet
-RUN wget -P /usr/local/bin https://storage.googleapis.com/kubernetes-release/release/v1.7.6/bin/linux/amd64/kube-proxy
+RUN wget -P /usr/local/bin https://storage.googleapis.com/kubernetes-release/release/v1.8.0/bin/linux/amd64/kubelet
+RUN wget -P /usr/local/bin https://storage.googleapis.com/kubernetes-release/release/v1.8.0/bin/linux/amd64/kube-proxy
+RUN wget -P /usr/local/bin https://storage.googleapis.com/kubernetes-release/release/v1.8.0/bin/linux/amd64/kubectl
 RUN chmod +x /usr/local/bin/kube*
 
 #Configs
-ADD etc /etc/
+COPY etc /etc/
+COPY manifests /etc/kubernetes/manifests
 
 # Add runit services
 COPY sv /etc/service 
