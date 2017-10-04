@@ -2,17 +2,42 @@
 
 source /etc/envvars
 
-IP=`ip route get 1 | awk '{print $NF;exit}'`
+export IP=`ip route get 1 | awk '{print $NF;exit}'`
+export ROLE=kube-proxy
+export USER=system:kube-proxy
+
 KUBE_PROXY_OPTS="\
---cluster-cidr "$CLUSTER_CIDR" \
 --hostname-override=$IP \
+--cluster-cidr "$CLUSTER_CIDR" \
 --proxy-mode=iptables \
+--kubeconfig=/etc/kubernetes/$ROLE-kubeconfig.yml \
+--logtostderr=true \
 --v=2 \
---kubeconfig=/etc/kubernetes/proxy-kubeconfig.yml \
---logtostderr=true"
+"
+
+vault auth VAULT_TOKEN
+
+#API-Server cert and key
+mkdir -p /srv/kubernetes
+DATA=$(vault write --format=json kubernetes/issue/$ROLE common_name="$USER")
+echo $DATA|jq -r .data.issuing_ca > /srv/kubernetes/$ROLE-ca.pem
+echo $DATA|jq -r .data.certificate > /srv/kubernetes/$ROLE-cert.pem
+echo $DATA|jq -r .data.private_key > /srv/kubernetes/$ROLE-key.pem
 
 mkdir -p /etc/kubernetes
-cat /etc/template/kubeconfig.yml | envsubst > /etc/kubernetes/proxy-kubeconfig.yml
+kubectl config set-cluster kubernetes \
+    --certificate-authority=/srv/kubernetes/$ROLE-ca.pem \
+    --server=$KUBERNETES_MASTER \
+    --kubeconfig=/etc/kubernetes/$ROLE-kubeconfig.yml
+kubectl config set-credentials $USER \
+    --client-certificate=/srv/kubernetes/$ROLE-cert.pem \
+    --client-key=/srv/kubernetes/$ROLE-key.pem \
+    --kubeconfig=/etc/kubernetes/$ROLE-kubeconfig.yml
+kubectl config set-context default \
+    --cluster=kubernetes \
+    --user=$USER \
+    --kubeconfig=/etc/kubernetes/$ROLE-kubeconfig.yml
+kubectl config use-context default --kubeconfig=/etc/kubernetes/$ROLE-kubeconfig.yml
 
 exec 2>&1
 exec kube-proxy ${KUBE_PROXY_OPTS}

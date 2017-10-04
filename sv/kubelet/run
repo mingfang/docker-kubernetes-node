@@ -3,9 +3,13 @@
 source /etc/envvars
 
 export IP=`ip route get 1 | awk '{print $NF;exit}'`
+export ROLE=kubelet
+export USER="system:node:$IP"
+
 HOST=`hostname -s`
-KUBELET_OPTS="--address=0.0.0.0 \
+KUBELET_OPTS="\
 --hostname_override=$IP \
+--address=0.0.0.0 \
 --cluster_dns=$IP \
 --port=10250 \
 --containerized=false \
@@ -19,12 +23,36 @@ KUBELET_OPTS="--address=0.0.0.0 \
 --pod-manifest-path=/etc/kubernetes/manifests \
 --kube-reserved=cpu=500m,memory=20Mi \
 --system-reserved=cpu=100m,memory=10Mi \
---v=2 \
+--cloud-config="" \
+--cloud-provider="" \
+--kubeconfig=/etc/kubernetes/$ROLE-kubeconfig.yml \
 --logtostderr=true \
---cloud-config="" \ 
---cloud-provider="" \ 
---kubeconfig=/etc/kubernetes/kubelet-kubeconfig.yml \
+--v=2 \
 "
+
+vault auth VAULT_TOKEN
+
+#API-Server cert and key
+mkdir -p /srv/kubernetes
+DATA=$(vault write --format=json kubernetes/issue/$ROLE common_name="$USER")
+echo $DATA|jq -r .data.issuing_ca > /srv/kubernetes/$ROLE-ca.pem
+echo $DATA|jq -r .data.certificate > /srv/kubernetes/$ROLE-cert.pem
+echo $DATA|jq -r .data.private_key > /srv/kubernetes/$ROLE-key.pem
+
+mkdir -p /etc/kubernetes
+kubectl config set-cluster kubernetes \
+    --certificate-authority=/srv/kubernetes/$ROLE-ca.pem \
+    --server=$KUBERNETES_MASTER \
+    --kubeconfig=/etc/kubernetes/$ROLE-kubeconfig.yml
+kubectl config set-credentials $USER \
+    --client-certificate=/srv/kubernetes/$ROLE-cert.pem \
+    --client-key=/srv/kubernetes/$ROLE-key.pem \
+    --kubeconfig=/etc/kubernetes/$ROLE-kubeconfig.yml
+kubectl config set-context default \
+    --cluster=kubernetes \
+    --user=$USER \
+    --kubeconfig=/etc/kubernetes/$ROLE-kubeconfig.yml
+kubectl config use-context default --kubeconfig=/etc/kubernetes/$ROLE-kubeconfig.yml
 
 #setup cgroups
 for cgroup in /sys/fs/cgroup/*; do
@@ -32,9 +60,6 @@ for cgroup in /sys/fs/cgroup/*; do
     mkdir -p $cgroup/kubepods
   fi
 done
-
-mkdir -p /etc/kubernetes
-cat /etc/template/kubeconfig.yml | envsubst > /etc/kubernetes/kubelet-kubeconfig.yml
 
 exec 2>&1
 exec kubelet ${KUBELET_OPTS}

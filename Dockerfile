@@ -36,6 +36,12 @@ RUN apt-get install -y ceph-common
 #For Hairpin-veth mode
 RUN apt-get install -y ethtool
 
+#Vault
+RUN wget https://releases.hashicorp.com/vault/0.8.3/vault_0.8.3_linux_amd64.zip && \
+    unzip vault*.zip && \
+    rm vault*.zip && \
+    mv vault /usr/local/bin/
+
 #Kubernetes
 RUN wget -P /usr/local/bin https://storage.googleapis.com/kubernetes-release/release/v1.8.0/bin/linux/amd64/kubelet
 RUN wget -P /usr/local/bin https://storage.googleapis.com/kubernetes-release/release/v1.8.0/bin/linux/amd64/kube-proxy
@@ -43,6 +49,7 @@ RUN wget -P /usr/local/bin https://storage.googleapis.com/kubernetes-release/rel
 RUN chmod +x /usr/local/bin/kube*
 
 #Configs
+RUN mkdir -p /srv/kubernetes
 COPY etc /etc/
 COPY manifests /etc/kubernetes/manifests
 

@@ -22,10 +22,12 @@ else
          --name knode \
          -e LABELS=${LABELS} \
          -p 10250:10250 \
-         -e KUBERNETES_MASTER="http://$KUBERNETES_MASTER:8080" \
+         -e KUBERNETES_MASTER="https://$KUBERNETES_MASTER:443" \
          -e ETCD_HOST=$KUBERNETES_MASTER \
          -e ETCD_ENDPOINTS="http://$KUBERNETES_MASTER:4001" \
          -e CLUSTER_CIDR="250.0.0.0/8" \
+         -e VAULT_ADDR=http://$KUBERNETES_MASTER:8200 \
+         -e VAULT_TOKEN=$VAULT_TOKEN \
          --net=host \
          --pid=host \
          --privileged=true \
