@@ -1,5 +1,8 @@
 #!/bin/bash
 
+sv start kubelet  || exit 1
+until curl localhost:10255/healthz; do echo "Waiting for Kubelet..."; sleep 5; done
+
 source /etc/envvars
 
 export IP=`ip route get 1 | awk '{print $NF;exit}'`
