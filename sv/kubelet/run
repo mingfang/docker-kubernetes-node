@@ -8,6 +8,7 @@ export USER="system:node:$IP"
 
 HOST=`hostname -s`
 KUBELET_OPTS="\
+--cloud-provider="$CLOUD_PROVIDER" \
 --hostname_override=$IP \
 --address=0.0.0.0 \
 --cluster_dns=$IP \
@@ -23,8 +24,6 @@ KUBELET_OPTS="\
 --pod-manifest-path=/etc/kubernetes/manifests \
 --kube-reserved=cpu=500m,memory=20Mi \
 --system-reserved=cpu=100m,memory=10Mi \
---cloud-config="" \
---cloud-provider="" \
 --kubeconfig=/etc/kubernetes/$ROLE-kubeconfig.yml \
 --logtostderr=true \
 --v=2 \
