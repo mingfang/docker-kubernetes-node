@@ -8,7 +8,6 @@ export USER="system:node:$IP"
 
 HOST=`hostname -s`
 KUBELET_OPTS="\
---cloud-provider="$CLOUD_PROVIDER" \
 --hostname_override=$IP \
 --address=0.0.0.0 \
 --cluster_dns=$IP \

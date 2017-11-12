@@ -22,7 +22,7 @@ else
          --name knode \
          -e LABELS="$LABELS" \
          -e KUBERNETES_MASTER="https://$KUBERNETES_MASTER:6443" \
-         -e CLOUD_PROVIDER="$CLOUD_PROVIDER" \
+         -e REGION="$REGION" \
          -e AWS_PROFILE="$AWS_PROFILE" \
          -e ETCD_HOST="$KUBERNETES_MASTER" \
          -e ETCD_ENDPOINTS="http://$KUBERNETES_MASTER:4001" \
