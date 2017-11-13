@@ -5,12 +5,11 @@ until curl localhost:10255/healthz; do echo "Waiting for Kubelet..."; sleep 5; d
 
 source /etc/envvars
 
-export IP=`ip route get 1 | awk '{print $NF;exit}'`
 export ROLE=kube-proxy
 export USER=system:kube-proxy
 
 KUBE_PROXY_OPTS="\
---hostname-override=$IP \
+--hostname-override=$NODE_NAME \
 --cluster-cidr "$CLUSTER_CIDR" \
 --proxy-mode=iptables \
 --kubeconfig=/etc/kubernetes/$ROLE-kubeconfig.yml \

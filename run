@@ -1,6 +1,7 @@
 #!/bin/bash
 
 KUBERNETES_MASTER=$1
+NODE_NAME="${NODE_NAME=`hostname -s`}"
 
 if [ -z "$KUBERNETES_MASTER" ]
 then
@@ -16,12 +17,13 @@ else
   fi
   rpc.statd
   swapoff -a
- 
+
   docker rm -f knode
   docker run \
          --name knode \
          -e LABELS="$LABELS" \
          -e KUBERNETES_MASTER="https://$KUBERNETES_MASTER:6443" \
+         -e NODE_NAME="$NODE_NAME" \
          -e REGION="$REGION" \
          -e AWS_PROFILE="$AWS_PROFILE" \
          -e ETCD_HOST="$KUBERNETES_MASTER" \
