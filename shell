@@ -33,6 +33,7 @@ else
          -p 10250:10250 \
          -v /sys:/sys:rw \
          -v /:/rootfs:ro \
+         -v /dev:/dev:rw \
          -v /var/run:/var/run:rw \
          -v /var/lib/docker/:/var/lib/docker:rw \
          -v /var/lib/kubelet/:/var/lib/kubelet:rw,shared \
