@@ -48,6 +48,12 @@ RUN wget -P /usr/local/bin https://storage.googleapis.com/kubernetes-release/rel
 RUN wget -P /usr/local/bin https://storage.googleapis.com/kubernetes-release/release/v1.8.3/bin/linux/amd64/kubectl
 RUN chmod +x /usr/local/bin/kube*
 
+#FlexVolume
+RUN mkdir -p /usr/libexec/kubernetes/kubelet-plugins/volume/exec
+RUN git clone --depth=1 https://github.com/mingfang/flexvolume-ebs.git /usr/libexec/kubernetes/kubelet-plugins/volume/exec/flexvolume~ebs
+RUN /usr/libexec/kubernetes/kubelet-plugins/volume/exec/flexvolume~ebs/install 
+RUN chmod +x /usr/libexec/kubernetes/kubelet-plugins/volume/exec/*/*
+
 #Configs
 RUN mkdir -p /srv/kubernetes
 COPY etc /etc/
