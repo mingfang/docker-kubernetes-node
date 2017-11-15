@@ -24,8 +24,6 @@ else
          -e LABELS="$LABELS" \
          -e KUBERNETES_MASTER="https://$KUBERNETES_MASTER:6443" \
          -e NODE_NAME="$NODE_NAME" \
-         -e REGION="$REGION" \
-         -e AWS_PROFILE="$AWS_PROFILE" \
          -e ETCD_HOST="$KUBERNETES_MASTER" \
          -e ETCD_ENDPOINTS="http://$KUBERNETES_MASTER:4001" \
          -e CLUSTER_CIDR="250.0.0.0/8" \
