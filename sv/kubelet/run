@@ -6,6 +6,7 @@ export IP=`ip route get 1 | awk '{print $NF;exit}'`
 export ROLE=kubelet
 export USER="system:node:$NODE_NAME"
 
+HOST=`hostname -s`
 KUBELET_OPTS="\
 --hostname_override=$NODE_NAME \
 --address=0.0.0.0 \
@@ -17,7 +18,7 @@ KUBELET_OPTS="\
 --registry-qps=0 \
 --hairpin-mode=hairpin-veth \
 --serialize-image-pulls=false \
---node-labels=host=${LABELS} \
+--node-labels=host=${HOST},${LABELS} \
 --allow-privileged=true \
 --pod-manifest-path=/etc/kubernetes/manifests \
 --kube-reserved=cpu=500m,memory=20Mi \
