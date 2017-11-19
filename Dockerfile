@@ -30,6 +30,9 @@ RUN apt-get install -y --no-install-recommends zfsutils-linux
 #NFS client
 RUN apt-get install -y nfs-common
 
+#XFS
+RUN apt-get install -y libguestfs-xfs
+
 #Ceph client
 RUN apt-get install -y ceph-common
 
