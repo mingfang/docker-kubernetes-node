@@ -21,7 +21,7 @@ RUN apt-get install -y --no-install-recommends iptables conntrack
 
 #Dnsmasq and Confd used for DNS
 RUN apt-get install -y --no-install-recommends dnsmasq 
-RUN wget -O /usr/local/bin/confd  https://github.com/kelseyhightower/confd/releases/download/v0.13.0/confd-0.13.0-linux-amd64 && \
+RUN wget -O /usr/local/bin/confd  https://github.com/kelseyhightower/confd/releases/download/v0.14.0/confd-0.14.0-linux-amd64 && \
     chmod +x /usr/local/bin/confd
 
 #ZFS
