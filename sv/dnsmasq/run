@@ -4,7 +4,5 @@
 
 source /etc/envvars
 
-PRIMARY=`route|grep default|awk '{print $8}'`
-
 exec 2>&1
-exec dnsmasq --user=root --interface=$PRIMARY --bind-interfaces --hostsdir=/etc/confd/hosts --domain-needed --keep-in-foreground --log-facility -
+exec dnsmasq --user=root --bind-dynamic --hostsdir=/etc/confd/hosts --domain-needed --keep-in-foreground --log-facility -

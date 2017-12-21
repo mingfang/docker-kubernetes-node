@@ -2,7 +2,7 @@
 
 source /etc/envvars
 
-export IP=`ip route get 1 | awk '{print $NF;exit}'`
+export IP=`ip route get 1 | awk '{print $7;exit}'`
 export ROLE=kubelet
 export USER="system:node:$NODE_NAME"
 

@@ -8,7 +8,7 @@ echo "apt-get update && apt-get install -y ubuntu-fan"
 echo 
 
 # Find primary interface 
-PRIMARY=`ip route get 1 | awk '{print $NF;exit}'`
+PRIMARY=`ip route get 1 | awk '{print $7;exit}'`
 UNDERLAY="${PRIMARY}/16"
 OVERLAY="250.0.0.0/8"
 IFS=. read ip1 ip2 ip3 ip4 <<< "$PRIMARY"
