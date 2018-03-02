@@ -23,7 +23,7 @@ rm -r /var/lib/docker/network/files/local-kv.db
 
 # Restart Docker daemon to use the new DOCKER_BRIDGE
 ZFS=$([ `df --output=fstype /var/lib/docker|tail -1` == "zfs" ] && echo "--storage-driver=zfs" || echo  "")
-DOCKER_OPTS="--bridge=kbr0 --fixed-cidr=$DOCKER_CIDR --mtu=1450 --iptables=true --insecure-registry=0.0.0.0/0 $ZFS"
+DOCKER_OPTS="--bridge=kbr0 --fixed-cidr=$DOCKER_CIDR --mtu=1450 --insecure-registry=0.0.0.0/0 $ZFS"
 
 #/etc/systemd/system/docker.service.d/docker.conf
 mkdir -p /etc/systemd/system/docker.service.d

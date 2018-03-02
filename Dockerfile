@@ -39,6 +39,9 @@ RUN apt-get install -y ceph-common
 #For Hairpin-veth mode
 RUN apt-get install -y ethtool
 
+#IPVS
+RUN apt-get install -y ipvsadm ipset
+
 #Vault
 RUN wget https://releases.hashicorp.com/vault/0.8.3/vault_0.8.3_linux_amd64.zip && \
     unzip vault*.zip && \
