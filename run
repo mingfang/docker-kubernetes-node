@@ -19,6 +19,7 @@ else
   rpc.statd
   swapoff -a
 
+  mkdir -p /local-data
   docker rm -f knode
   docker run \
          --name knode \
@@ -43,6 +44,7 @@ else
          -v /var/lib/docker/:/var/lib/docker:rw \
          -v /var/lib/kubelet/:/var/lib/kubelet:rw,shared \
          -v /var/log:/var/log \
+         -v /local-data/:/local-data:rw,shared \
          -d kubernetes-node
 fi
 
