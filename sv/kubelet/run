@@ -24,6 +24,7 @@ KUBELET_OPTS="\
 --kube-reserved=cpu=500m,memory=20Mi \
 --system-reserved=cpu=100m,memory=10Mi \
 --kubeconfig=/etc/kubernetes/$ROLE-kubeconfig.yml \
+--feature-gates=PodPriority=true \
 --logtostderr=true \
 --v=2 \
 "
