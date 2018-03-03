@@ -12,7 +12,7 @@ KUBE_PROXY_OPTS="\
 --hostname-override=$NODE_NAME \
 --cluster-cidr "$CLUSTER_CIDR" \
 --proxy-mode=ipvs \
---feature-gates=SupportIPVSProxyMode=true \
+--feature-gates=$FEATURE_GATES \
 --kubeconfig=/etc/kubernetes/$ROLE-kubeconfig.yml \
 --logtostderr=true \
 --v=2 \
