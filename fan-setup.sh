@@ -19,6 +19,8 @@ DOCKER_BRIDGE=kbr0
 fanctl down -e
 fanctl up -u $UNDERLAY -o $OVERLAY --bridge=$DOCKER_BRIDGE
 fanctl show
+ip link set ftun0 arp off
+ip link show
 rm -r /var/lib/docker/network/files/local-kv.db
 
 # Restart Docker daemon to use the new DOCKER_BRIDGE
