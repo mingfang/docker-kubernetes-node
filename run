@@ -2,6 +2,7 @@
 
 KUBERNETES_MASTER=$1
 NODE_NAME="${NODE_NAME=`hostname -s`}"
+FEATURE_GATES="SupportIPVSProxyMode=true,PodPriority=true,PersistentLocalVolumes=true,VolumeScheduling=true"
 
 if [ -z "$KUBERNETES_MASTER" ]
 then
@@ -18,12 +19,14 @@ else
   rpc.statd
   swapoff -a
 
+  mkdir -p /local-data
   docker rm -f knode
   docker run \
          --name knode \
          -e LABELS="$LABELS" \
          -e KUBERNETES_MASTER="https://$KUBERNETES_MASTER:6443" \
          -e NODE_NAME="$NODE_NAME" \
+         -e FEATURE_GATES="$FEATURE_GATES" \
          -e ETCD_HOST="$KUBERNETES_MASTER" \
          -e ETCD_ENDPOINTS="http://$KUBERNETES_MASTER:4001" \
          -e CLUSTER_CIDR="250.0.0.0/8" \
@@ -41,6 +44,7 @@ else
          -v /var/lib/docker/:/var/lib/docker:rw \
          -v /var/lib/kubelet/:/var/lib/kubelet:rw,shared \
          -v /var/log:/var/log \
+         -v /local-data/:/local-data:rw,shared \
          -d kubernetes-node
 fi
 
