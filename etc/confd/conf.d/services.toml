@@ -1,10 +1,11 @@
 [template]
 src = "services.tmpl"
 dest = "/etc/confd/hosts/services"
-prefix = "/registry/services"
+prefix = "/registry"
 keys = [
-    "/specs/default",
-    "/endpoints/default"
+    "/services/specs",
+    "/services/endpoints",
+    "/namespaces"
 ]
 
 check_cmd = "dnsmasq --test"
