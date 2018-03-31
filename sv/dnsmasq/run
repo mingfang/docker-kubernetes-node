@@ -5,4 +5,4 @@
 source /etc/envvars
 
 exec 2>&1
-exec dnsmasq --user=root --bind-dynamic --hostsdir=/etc/confd/hosts --domain-needed --keep-in-foreground --log-facility -
+exec dnsmasq --cache-size=1000 --no-negcache --user=root --hostsdir=/etc/confd/hosts --keep-in-foreground --log-facility=-
