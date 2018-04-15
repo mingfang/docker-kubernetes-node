@@ -11,6 +11,7 @@ KUBELET_OPTS="\
 --hostname_override=$NODE_NAME \
 --address=0.0.0.0 \
 --cluster_dns=$IP \
+--cluster-domain=cluster.local \
 --port=10250 \
 --containerized=false \
 --image-gc-high-threshold=50 \
