@@ -1,20 +1,20 @@
-{{range gets "/namespaces/*"}}
-  {{$namespace := json .Value}}
+{{- range gets "/namespaces/*"}}
+  {{- $namespace := json .Value}}
 
-  {{$servicesPath := printf "/services/specs/%s/*" $namespace.metadata.name}}
-  {{range gets $servicesPath}}
-    {{$service := json .Value}}
-    {{if ne $service.spec.clusterIP "None"}}
-      {{$service.spec.clusterIP}} {{$service.metadata.name}} {{$service.metadata.name}}.{{$service.metadata.namespace}}.svc
-    {{else}}
-      {{$endpointPath := printf "/services/endpoints/%s/%s" $namespace.metadata.name $service.metadata.name}}
-      {{$endpoint := json (getv $endpointPath)}}
-      {{range $subset := $endpoint.subsets}}
-        {{range $subset.addresses}}
-          {{.ip}} {{$service.metadata.name}}
-        {{end}}
-      {{end}}
-    {{end}}
-  {{end}}
+  {{- $servicesPath := printf "/services/specs/%s/*" $namespace.metadata.name}}
+  {{- range gets $servicesPath}}
+    {{- $service := json .Value}}
+    {{- if ne $service.spec.clusterIP "None"}}
+      {{- $service.spec.clusterIP}} {{$service.metadata.name}} {{$service.metadata.name}}.{{$service.metadata.namespace}}.svc
+    {{- else}}
+      {{- $endpointPath := printf "/services/endpoints/%s/%s" $namespace.metadata.name $service.metadata.name}}
+      {{- $endpoint := json (getv $endpointPath)}}
+      {{- range $subset := $endpoint.subsets}}
+        {{- range $subset.addresses}}
+          {{- .ip}} {{$service.metadata.name}}
+        {{- end}}
+      {{- end}}
+    {{- end}}
+  {{- end}}
 
-{{end}}
+{{- end}}

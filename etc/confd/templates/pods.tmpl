@@ -1,12 +1,12 @@
-{{range gets "/namespaces/*"}}
-  {{$namespace := json .Value}}
+{{- range gets "/namespaces/*"}}
+  {{- $namespace := json .Value}}
 
-  {{$podsPath := printf "/pods/%s/*" $namespace.metadata.name}}
-  {{range gets $podsPath}}
-    {{$pod := json .Value}}
-    {{if $pod.status.podIP }}
-      {{$pod.status.podIP}} {{$pod.metadata.name}}
-    {{end}}
-  {{end}}
+  {{- $podsPath := printf "/pods/%s/*" $namespace.metadata.name}}
+  {{- range gets $podsPath}}
+    {{- $pod := json .Value}}
+    {{- if $pod.status.podIP }}
+      {{- $pod.status.podIP}} {{$pod.metadata.name}}
+    {{- end}}
+  {{- end}}
 
-{{end}}
+{{- end}}
