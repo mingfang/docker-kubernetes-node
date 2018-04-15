@@ -5,7 +5,7 @@
   {{- range gets $podsPath}}
     {{- $pod := json .Value}}
     {{- if $pod.status.podIP }}
-      {{$pod.status.podIP}} {{$pod.metadata.name}}
+      {{$pod.status.podIP}} {{if eq $pod.metadata.namespace "default"}}{{$pod.metadata.name}}{{end}} {{$pod.metadata.name}}.{{$pod.metadata.namespace}}.pod.cluster.local 
     {{- end}}
   {{- end}}
 
