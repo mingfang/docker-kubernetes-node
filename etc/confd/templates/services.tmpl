@@ -5,13 +5,13 @@
   {{- range gets $servicesPath}}
     {{- $service := json .Value}}
     {{- if ne $service.spec.clusterIP "None"}}
-      {{$service.spec.clusterIP}} {{if eq $service.metadata.namespace "default"}}{{$service.metadata.name}}{{end}} {{$service.metadata.name}}.{{$service.metadata.namespace}}.svc.cluster.local
+      {{$service.spec.clusterIP}} {{$service.metadata.name}}.{{$service.metadata.namespace}}.svc.cluster.local
     {{- else}}
       {{- $endpointPath := printf "/services/endpoints/%s/%s" $namespace.metadata.name $service.metadata.name}}
       {{- $endpoint := json (getv $endpointPath)}}
       {{- range $subset := $endpoint.subsets}}
         {{- range $subset.addresses}}
-          {{.ip}} {{if eq $service.metadata.namespace "default"}}{{$service.metadata.name}}{{end}} {{$service.metadata.name}}.{{$service.metadata.namespace}}.svc.cluster.local
+          {{.ip}} {{$service.metadata.name}}.{{$service.metadata.namespace}}.svc.cluster.local
         {{- end}}
       {{- end}}
     {{- end}}
