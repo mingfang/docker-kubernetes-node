@@ -19,11 +19,6 @@ RUN apt-get install -y --no-install-recommends vim less net-tools inetutils-ping
 #Proxy needs iptables
 RUN apt-get install -y --no-install-recommends iptables conntrack
 
-#Dnsmasq and Confd used for DNS
-RUN apt-get install -y --no-install-recommends dnsmasq 
-RUN wget -O /usr/local/bin/confd  https://github.com/kelseyhightower/confd/releases/download/v0.15.0/confd-0.15.0-linux-amd64 && \
-    chmod +x /usr/local/bin/confd
-
 #ZFS
 RUN apt-get install -y --no-install-recommends zfsutils-linux
 

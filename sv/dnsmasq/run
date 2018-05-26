@@ -1,8 +1,0 @@
-#!/bin/bash
-
-#sv start register  || exit 1
-
-source /etc/envvars
-
-exec 2>&1
-exec dnsmasq --bind-dynamic --except-interface=lo --cache-size=1000 --no-negcache --user=root --hostsdir=/etc/confd/hosts --keep-in-foreground --log-facility=-
