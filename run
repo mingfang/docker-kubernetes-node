@@ -2,7 +2,7 @@
 
 KUBERNETES_MASTER=$1
 NODE_NAME="${NODE_NAME=`hostname -s`}"
-FEATURE_GATES="ReadOnlyAPIDataVolumes=false,SupportIPVSProxyMode=true,PodPriority=true,PersistentLocalVolumes=true,VolumeScheduling=true"
+FEATURE_GATES="ReadOnlyAPIDataVolumes=false,SupportIPVSProxyMode=true,PodPriority=true,PersistentLocalVolumes=true,VolumeScheduling=trueTaintNodesByCondition=true,TaintBasedEvictions=true"
 
 if [ -z "$KUBERNETES_MASTER" ]
 then
