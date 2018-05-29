@@ -43,6 +43,7 @@ else
          -v /var/run:/var/run:rw \
          -v /var/lib/docker/:/var/lib/docker:rw \
          -v /var/lib/kubelet/:/var/lib/kubelet:rw,shared \
+	 -v /var/lib/kubelet/volumeplugins:/var/lib/kubelet/volumeplugins:rw \
          -v /var/log:/var/log \
          -v /local-data/:/local-data:rw,shared \
          -d kubernetes-node

@@ -26,6 +26,7 @@ KUBELET_OPTS="\
 --system-reserved=cpu=100m,memory=10Mi \
 --kubeconfig=/etc/kubernetes/$ROLE-kubeconfig.yml \
 --feature-gates=$FEATURE_GATES \
+--volume-plugin-dir=/var/lib/kubelet/volumeplugins \
 --logtostderr=true \
 --v=2 \
 "
