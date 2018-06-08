@@ -38,15 +38,15 @@ RUN apt-get install -y ethtool
 RUN apt-get install -y ipvsadm ipset
 
 #Vault
-RUN wget https://releases.hashicorp.com/vault/0.9.5/vault_0.9.5_linux_amd64.zip && \
+RUN wget https://releases.hashicorp.com/vault/0.10.2/vault_0.10.2_linux_amd64.zip && \
     unzip vault*.zip && \
     rm vault*.zip && \
     mv vault /usr/local/bin/
 
 #Kubernetes
-RUN wget -P /usr/local/bin https://storage.googleapis.com/kubernetes-release/release/v1.10.3/bin/linux/amd64/kubelet
-RUN wget -P /usr/local/bin https://storage.googleapis.com/kubernetes-release/release/v1.10.3/bin/linux/amd64/kube-proxy
-RUN wget -P /usr/local/bin https://storage.googleapis.com/kubernetes-release/release/v1.10.3/bin/linux/amd64/kubectl
+RUN wget -P /usr/local/bin https://storage.googleapis.com/kubernetes-release/release/v1.10.4/bin/linux/amd64/kubelet
+RUN wget -P /usr/local/bin https://storage.googleapis.com/kubernetes-release/release/v1.10.4/bin/linux/amd64/kube-proxy
+RUN wget -P /usr/local/bin https://storage.googleapis.com/kubernetes-release/release/v1.10.4/bin/linux/amd64/kubectl
 RUN chmod +x /usr/local/bin/kube*
 
 #FlexVolume
