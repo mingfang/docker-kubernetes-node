@@ -1,10 +1,12 @@
 #!/bin/bash
 
+sv start kubelet  || exit 1
+
 source /etc/envvars
 
-sv start kubelet  || exit 1
-until curl localhost:10255/healthz; do echo "Waiting for Kubelet..."; sleep 5; done
+until curl -s localhost:10255/healthz; do echo "Waiting for Kubelet..."; sleep 5; done
 
+export PKI_DIR=/srv/kubernetes
 export ROLE=kube-proxy
 export USER=system:kube-proxy
 
@@ -18,23 +20,24 @@ KUBE_PROXY_OPTS="\
 --v=2 \
 "
 
-vault auth VAULT_TOKEN
-
 #API-Server cert and key
-mkdir -p /srv/kubernetes
-DATA=$(vault write --format=json kubernetes/issue/$ROLE common_name="$USER" ttl=8760h)
-echo $DATA|jq -r .data.issuing_ca > /srv/kubernetes/$ROLE-ca.pem
-echo $DATA|jq -r .data.certificate > /srv/kubernetes/$ROLE-cert.pem
-echo $DATA|jq -r .data.private_key > /srv/kubernetes/$ROLE-key.pem
+mkdir -p $PKI_DIR
+if [ ! -f $PKI_DIR/$ROLE-key.pem ]; then
+  vault auth VAULT_TOKEN
+  DATA=$(vault write --format=json kubernetes/issue/$ROLE common_name="$USER" ttl=8760h)
+  echo $DATA|jq -r .data.issuing_ca > $PKI_DIR/$ROLE-ca.pem
+  echo $DATA|jq -r .data.certificate > $PKI_DIR/$ROLE-cert.pem
+  echo $DATA|jq -r .data.private_key > $PKI_DIR/$ROLE-key.pem
+fi
 
 mkdir -p /etc/kubernetes
 kubectl config set-cluster kubernetes \
-    --certificate-authority=/srv/kubernetes/$ROLE-ca.pem \
+    --certificate-authority=$PKI_DIR/$ROLE-ca.pem \
     --server=$KUBERNETES_MASTER \
     --kubeconfig=/etc/kubernetes/$ROLE-kubeconfig.yml
 kubectl config set-credentials $USER \
-    --client-certificate=/srv/kubernetes/$ROLE-cert.pem \
-    --client-key=/srv/kubernetes/$ROLE-key.pem \
+    --client-certificate=$PKI_DIR/$ROLE-cert.pem \
+    --client-key=$PKI_DIR/$ROLE-key.pem \
     --kubeconfig=/etc/kubernetes/$ROLE-kubeconfig.yml
 kubectl config set-context default \
     --cluster=kubernetes \
