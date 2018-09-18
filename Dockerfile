@@ -43,6 +43,9 @@ RUN wget https://releases.hashicorp.com/vault/0.10.2/vault_0.10.2_linux_amd64.zi
     rm vault*.zip && \
     mv vault /usr/local/bin/
 
+#Docker client only
+RUN wget -O - https://get.docker.com/builds/Linux/x86_64/docker-latest.tgz | tar zx -C /usr/local/bin --strip-components=1 docker/docker
+
 #Kubernetes
 RUN wget -P /usr/local/bin https://storage.googleapis.com/kubernetes-release/release/v1.11.3/bin/linux/amd64/kubelet
 RUN wget -P /usr/local/bin https://storage.googleapis.com/kubernetes-release/release/v1.11.3/bin/linux/amd64/kube-proxy
