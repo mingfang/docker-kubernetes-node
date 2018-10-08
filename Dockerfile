@@ -54,7 +54,6 @@ RUN chmod +x /usr/local/bin/kube*
 
 #Configs
 RUN mkdir -p /srv/kubernetes
-COPY etc /etc/
 COPY manifests /etc/kubernetes/manifests
 
 # Add runit services
