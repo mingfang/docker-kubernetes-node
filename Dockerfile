@@ -1,5 +1,5 @@
-FROM ubuntu:16.04 as base
-
+FROM ubuntu:18.04 as base
+  
 ENV DEBIAN_FRONTEND=noninteractive TERM=xterm
 RUN echo "export > /etc/envvars" >> /root/.bashrc && \
     echo "export PS1='\[\e[1;31m\]\u@\h:\w\\$\[\e[0m\] '" | tee -a /root/.bashrc /etc/skel/.bashrc && \
@@ -11,10 +11,10 @@ ENV LANGUAGE=en_US.UTF-8 LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
 
 # Runit
 RUN apt-get install -y --no-install-recommends runit
-CMD export > /etc/envvars && /usr/sbin/runsvdir-start
+CMD bash -c 'export > /etc/envvars && /usr/bin/runsvdir /etc/service'
 
 # Utilities
-RUN apt-get install -y --no-install-recommends vim less net-tools inetutils-ping wget curl git telnet nmap socat dnsutils netcat tree htop unzip sudo software-properties-common jq psmisc iproute python ssh rsync gettext-base
+RUN apt-get install -y --no-install-recommends vim less net-tools inetutils-ping wget curl git telnet nmap socat dnsutils netcat tree htop unzip sudo software-properties-common jq psmisc iproute2 python ssh rsync gettext-base
 
 #Proxy needs iptables
 RUN apt-get install -y --no-install-recommends iptables conntrack
