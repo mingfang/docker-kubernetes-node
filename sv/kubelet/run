@@ -30,6 +30,8 @@ KUBELET_OPTS="\
 --feature-gates=$FEATURE_GATES \
 --register-with-taints=$TAINTS \
 --volume-plugin-dir=/var/lib/kubelet/volumeplugins \
+--anonymous-auth=false \
+--client-ca-file=$PKI_DIR/$ROLE-ca.pem \
 --logtostderr=true \
 --v=2 \
 "
