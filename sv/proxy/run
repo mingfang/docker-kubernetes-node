@@ -23,7 +23,6 @@ KUBE_PROXY_OPTS="\
 #API-Server cert and key
 mkdir -p $PKI_DIR
 if [ ! -f $PKI_DIR/$ROLE-key.pem ]; then
-  vault auth VAULT_TOKEN
   DATA=$(vault write --format=json kubernetes/issue/$ROLE common_name="$USER" ttl=8760h)
   echo $DATA|jq -r .data.issuing_ca > $PKI_DIR/$ROLE-ca.pem
   echo $DATA|jq -r .data.certificate > $PKI_DIR/$ROLE-cert.pem
