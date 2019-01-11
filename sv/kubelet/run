@@ -2,7 +2,7 @@
 
 source /etc/envvars
 
-export PKI_DIR=/srv/kubernetes
+export PKI_DIR=/dev/shm/kubernetes
 export IP=`ip route get 1 | awk '{print $7;exit}'`
 export ROLE=kubelet
 export USER="system:node:$NODE_NAME"
@@ -26,7 +26,7 @@ KUBELET_OPTS="\
 --pod-manifest-path=/etc/kubernetes/manifests \
 --kube-reserved=cpu=100m,memory=100Mi \
 --system-reserved=cpu=100m,memory=100Mi \
---kubeconfig=/etc/kubernetes/$ROLE-kubeconfig.yml \
+--kubeconfig=$PKI_DIR/$ROLE-kubeconfig.yml \
 --feature-gates=$FEATURE_GATES \
 --register-with-taints=$TAINTS \
 --volume-plugin-dir=/var/lib/kubelet/volumeplugins \
@@ -45,20 +45,19 @@ if [ ! -f $PKI_DIR/$ROLE-key.pem ]; then
   echo $DATA|jq -r .data.private_key > $PKI_DIR/$ROLE-key.pem
 fi
 
-mkdir -p /etc/kubernetes
 kubectl config set-cluster kubernetes \
     --certificate-authority=$PKI_DIR/$ROLE-ca.pem \
     --server=$KUBERNETES_MASTER \
-    --kubeconfig=/etc/kubernetes/$ROLE-kubeconfig.yml
+    --kubeconfig=$PKI_DIR/$ROLE-kubeconfig.yml
 kubectl config set-credentials $USER \
     --client-certificate=$PKI_DIR/$ROLE-cert.pem \
     --client-key=$PKI_DIR/$ROLE-key.pem \
-    --kubeconfig=/etc/kubernetes/$ROLE-kubeconfig.yml
+    --kubeconfig=$PKI_DIR/$ROLE-kubeconfig.yml
 kubectl config set-context default \
     --cluster=kubernetes \
     --user=$USER \
-    --kubeconfig=/etc/kubernetes/$ROLE-kubeconfig.yml
-kubectl config use-context default --kubeconfig=/etc/kubernetes/$ROLE-kubeconfig.yml
+    --kubeconfig=$PKI_DIR/$ROLE-kubeconfig.yml
+kubectl config use-context default --kubeconfig=$PKI_DIR/$ROLE-kubeconfig.yml
 
 #setup cgroups
 for cgroup in /sys/fs/cgroup/*; do
