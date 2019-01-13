@@ -1,7 +1,5 @@
 #!/bin/bash
 
-sv start kubelet  || exit 1
-
 source /etc/envvars
 
 until curl -s localhost:10255/healthz; do echo "Waiting for Kubelet..."; sleep 5; done
@@ -20,15 +18,7 @@ KUBE_PROXY_OPTS="\
 --v=2 \
 "
 
-#API-Server cert and key
 mkdir -p $PKI_DIR
-if [ ! -f $PKI_DIR/$ROLE-key.pem ]; then
-  DATA=$(vault write --format=json kubernetes/issue/$ROLE common_name="$USER" ttl=8760h)
-  echo $DATA|jq -r .data.issuing_ca > $PKI_DIR/$ROLE-ca.pem
-  echo $DATA|jq -r .data.certificate > $PKI_DIR/$ROLE-cert.pem
-  echo $DATA|jq -r .data.private_key > $PKI_DIR/$ROLE-key.pem
-fi
-
 kubectl config set-cluster kubernetes \
     --certificate-authority=$PKI_DIR/$ROLE-ca.pem \
     --server=$KUBERNETES_MASTER \

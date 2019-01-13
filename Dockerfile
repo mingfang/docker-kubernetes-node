@@ -37,11 +37,8 @@ RUN apt-get install -y ethtool
 #IPVS
 RUN apt-get install -y ipvsadm ipset
 
-#Vault
-RUN wget https://releases.hashicorp.com/vault/0.11.5/vault_0.11.5_linux_amd64.zip && \
-    unzip vault*.zip && \
-    rm vault*.zip && \
-    mv vault /usr/local/bin/
+#Consul Template
+RUN wget -O - https://releases.hashicorp.com/consul-template/0.19.5/consul-template_0.19.5_linux_amd64.tgz | tar zx -C /usr/local/bin
 
 #Docker client only
 RUN wget -O - https://get.docker.com/builds/Linux/x86_64/docker-latest.tgz | tar zx -C /usr/local/bin --strip-components=1 docker/docker
@@ -54,6 +51,8 @@ RUN chmod +x /usr/local/bin/kube*
 
 #Configs
 RUN mkdir -p /srv/kubernetes
+COPY consul-template.sh /
+
 COPY manifests /etc/kubernetes/manifests
 
 # Add runit services
