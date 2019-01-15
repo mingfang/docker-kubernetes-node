@@ -33,7 +33,8 @@ docker run \
        -e FEATURE_GATES="$FEATURE_GATES" \
        -e CLUSTER_CIDR="250.0.0.0/8" \
        -e VAULT_ADDR="http://$KUBERNETES_MASTER:8200" \
-       -e VAULT_TOKEN="$VAULT_TOKEN" \
+       -e KUBELET_TOKEN="$KUBELET_TOKEN" \
+       -e PROXY_TOKEN="$PROXY_TOKEN" \
        --net=host \
        --pid=host \
        --privileged=true \
