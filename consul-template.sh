@@ -47,4 +47,5 @@ consul-template \
   -log-level=info \
   -vault-ssl-verify=false \
   -vault-renew-token=true \
+  -vault-unwrap-token \
   -vault-token=${VAULT_TOKEN}
