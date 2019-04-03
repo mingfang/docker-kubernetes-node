@@ -22,6 +22,8 @@ swapoff -a
 mkdir -p /local-data
 
 docker rm -f knode
+umount /var/lib/kubelet/volumeplugins
+
 docker run \
        --name knode \
        -e LABELS="$LABELS" \
