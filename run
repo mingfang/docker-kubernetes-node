@@ -34,6 +34,7 @@ docker run \
        -e VPC_ID="$VPC_ID" \
        -e FEATURE_GATES="$FEATURE_GATES" \
        -e CLUSTER_CIDR="250.0.0.0/8" \
+       -e ALT_NAMES="$(hostname),$(hostname -I|tr ' ' ','),$ALT_NAMES" \
        -e VAULT_ADDR="http://$KUBERNETES_MASTER:8200" \
        -e KUBELET_TOKEN="$KUBELET_TOKEN" \
        -e PROXY_TOKEN="$PROXY_TOKEN" \
