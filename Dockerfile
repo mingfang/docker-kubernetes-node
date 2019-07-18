@@ -1,5 +1,5 @@
 FROM ubuntu:18.04 as base
-  
+
 ENV DEBIAN_FRONTEND=noninteractive TERM=xterm
 RUN echo "export > /etc/envvars" >> /root/.bashrc && \
     echo "export PS1='\[\e[1;31m\]\u@\h:\w\\$\[\e[0m\] '" | tee -a /root/.bashrc /etc/skel/.bashrc && \
@@ -38,15 +38,15 @@ RUN apt-get install -y ethtool
 RUN apt-get install -y ipvsadm ipset
 
 #Consul Template
-RUN wget -O - https://releases.hashicorp.com/consul-template/0.19.5/consul-template_0.19.5_linux_amd64.tgz | tar zx -C /usr/local/bin
+RUN wget -O - https://releases.hashicorp.com/consul-template/0.20.0/consul-template_0.20.0_linux_amd64.tgz | tar zx -C /usr/local/bin
 
 #Docker client only
 RUN wget -O - https://get.docker.com/builds/Linux/x86_64/docker-latest.tgz | tar zx -C /usr/local/bin --strip-components=1 docker/docker
 
 #Kubernetes
-RUN wget -P /usr/local/bin https://storage.googleapis.com/kubernetes-release/release/v1.14.3/bin/linux/amd64/kubelet
-RUN wget -P /usr/local/bin https://storage.googleapis.com/kubernetes-release/release/v1.14.3/bin/linux/amd64/kube-proxy
-RUN wget -P /usr/local/bin https://storage.googleapis.com/kubernetes-release/release/v1.14.3/bin/linux/amd64/kubectl
+RUN wget -P /usr/local/bin https://storage.googleapis.com/kubernetes-release/release/v1.15.1/bin/linux/amd64/kubelet
+RUN wget -P /usr/local/bin https://storage.googleapis.com/kubernetes-release/release/v1.15.1/bin/linux/amd64/kube-proxy
+RUN wget -P /usr/local/bin https://storage.googleapis.com/kubernetes-release/release/v1.15.1/bin/linux/amd64/kubectl
 RUN chmod +x /usr/local/bin/kube*
 
 #Configs
@@ -56,6 +56,6 @@ COPY consul-template.sh /
 COPY manifests /etc/kubernetes/manifests
 
 # Add runit services
-COPY sv /etc/service 
+COPY sv /etc/service
 ARG BUILD_INFO
 LABEL BUILD_INFO=$BUILD_INFO
