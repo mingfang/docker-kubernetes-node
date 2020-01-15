@@ -2,7 +2,7 @@
 
 KUBERNETES_MASTER=$1
 NODE_NAME="${NODE_NAME=`hostname -s`}"
-FEATURE_GATES="SupportIPVSProxyMode=true,PodPriority=true,PersistentLocalVolumes=true,TaintNodesByCondition=true,TaintBasedEvictions=true"
+FEATURE_GATES="SupportIPVSProxyMode=true,PodPriority=true,TaintNodesByCondition=true,TaintBasedEvictions=true"
 
 if [ -z "$KUBERNETES_MASTER" ]; then
   echo "KUBERNETES_MASTER not set"
@@ -11,7 +11,7 @@ fi
 
 echo "KUBERNETES_MASTER=$KUBERNETES_MASTER"
 echo "LABELS=$LABELS"
-if ! grep "/var/lib/kubelet " /proc/self/mountinfo | grep shared; then 
+if ! grep "/var/lib/kubelet " /proc/self/mountinfo | grep shared; then
   echo "Making /var/lib/kubelet shared."
   mkdir -p /var/lib/kubelet
   mount --bind /var/lib/kubelet /var/lib/kubelet
