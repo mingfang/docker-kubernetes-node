@@ -1,0 +1,7 @@
+#!/bin/bash
+
+while sleep 30; do
+  for intf in /sys/devices/virtual/net/kbr0/brif/*; do
+    echo 1 > $intf/hairpin_mode
+  done
+done
