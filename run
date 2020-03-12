@@ -24,6 +24,8 @@ mkdir -p /local-data
 docker rm -f knode
 umount /var/lib/kubelet/volumeplugins
 
+sysctl fs.inotify.max_user_watches=524288
+
 docker run \
        --name knode \
        -e LABELS="$LABELS" \
