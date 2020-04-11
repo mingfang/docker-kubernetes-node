@@ -35,7 +35,7 @@ docker run \
        -e REGION="$REGION" \
        -e VPC_ID="$VPC_ID" \
        -e FEATURE_GATES="$FEATURE_GATES" \
-       -e CLUSTER_CIDR="250.0.0.0/8" \
+       -e CLUSTER_CIDR="10.0.0.0/16" \
        -e ALT_NAMES="$(hostname),$(hostname -I|tr ' ' ','),$ALT_NAMES" \
        -e VAULT_ADDR="http://$KUBERNETES_MASTER:8200" \
        -e KUBELET_TOKEN="$KUBELET_TOKEN" \
@@ -52,6 +52,8 @@ docker run \
        -v /var/lib/docker/:/var/lib/docker:rw \
        -v /var/lib/kubelet/:/var/lib/kubelet:rw,shared \
        -v /var/lib/kubelet/volumeplugins:/var/lib/kubelet/volumeplugins:rw \
+       -v /var/lib/calico/:/var/lib/calico:ro \
+       -v /etc/cni/net.d:/etc/cni/net.d:ro \
        -v `pwd`/pki-data:/srv/kubernetes \
        -v /var/log:/var/log \
        -v /local-data/:/local-data:rw,shared \
