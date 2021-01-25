@@ -3,6 +3,7 @@
 KUBERNETES_MASTER=$1
 NODE_NAME="${NODE_NAME=`hostname -s`}"
 FEATURE_GATES="TaintBasedEvictions=true"
+CGROUP_DRIVER=$(docker info --format '{{print .CgroupDriver}}')
 
 if [ -z "$KUBERNETES_MASTER" ]; then
   echo "KUBERNETES_MASTER not set"
@@ -40,6 +41,7 @@ docker run \
        -e VAULT_ADDR="http://$KUBERNETES_MASTER:8200" \
        -e KUBELET_TOKEN="$KUBELET_TOKEN" \
        -e PROXY_TOKEN="$PROXY_TOKEN" \
+       -e CGROUP_DRIVER="$CGROUP_DRIVER" \
        --net=host \
        --pid=host \
        --privileged=true \
