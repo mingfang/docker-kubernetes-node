@@ -20,8 +20,8 @@ KUBE_PROXY_OPTS="\
 
 mkdir -p $PKI_DIR
 kubectl config set-cluster kubernetes \
-    --certificate-authority=$PKI_DIR/$ROLE-ca.pem \
     --server=$KUBERNETES_MASTER \
+    --certificate-authority=$PKI_DIR/$ROLE-ca.pem \
     --kubeconfig=$PKI_DIR/$ROLE-kubeconfig.yml
 kubectl config set-credentials $USER \
     --client-certificate=$PKI_DIR/$ROLE-cert.pem \

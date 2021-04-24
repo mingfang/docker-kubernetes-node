@@ -1,8 +1,9 @@
 #!/bin/bash
 
 KUBERNETES_MASTER=$1
-NODE_NAME="${NODE_NAME=`hostname -s`}"
+NODE_NAME="${NODE_NAME:-$(hostname -s)}"
 FEATURE_GATES=""
+# use same cgroup as Docker
 CGROUP_DRIVER=$(docker info --format '{{print .CgroupDriver}}')
 
 if [ -z "$KUBERNETES_MASTER" ]; then
@@ -12,6 +13,7 @@ fi
 
 echo "KUBERNETES_MASTER=$KUBERNETES_MASTER"
 echo "LABELS=$LABELS"
+echo "TAINTS=$TAINTS"
 if ! grep "/var/lib/kubelet " /proc/self/mountinfo | grep shared; then
   echo "Making /var/lib/kubelet shared."
   mkdir -p /var/lib/kubelet
@@ -25,6 +27,10 @@ mkdir -p /local-data
 docker rm -f knode
 umount /var/lib/kubelet/volumeplugins
 
+# Critical OS Settings
+sysctl -w net.ipv4.ip_forward=1
+modprobe br_netfilter
+sysctl -w net.bridge.bridge-nf-call-iptables=1
 sysctl fs.inotify.max_user_watches=524288
 
 docker run \
