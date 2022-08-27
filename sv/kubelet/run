@@ -26,8 +26,8 @@ KUBELET_OPTS="\
 --serialize-image-pulls=false \
 --node-labels=host=${HOST},${LABELS} \
 --pod-manifest-path=/etc/kubernetes/manifests \
---kube-reserved=cpu=100m,memory=100Mi \
---system-reserved=cpu=100m,memory=100Mi \
+--kube-reserved=cpu=100m,memory=128Mi \
+--system-reserved=cpu=100m,memory=128Mi \
 --kubeconfig=$PKI_DIR/$ROLE-kubeconfig.yml \
 --feature-gates=$FEATURE_GATES \
 --register-with-taints=$TAINTS \
