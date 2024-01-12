@@ -1,4 +1,4 @@
-FROM ubuntu:18.04 as base
+FROM ubuntu:20.04 as base
 
 ENV DEBIAN_FRONTEND=noninteractive TERM=xterm
 RUN echo "export > /etc/envvars" >> /root/.bashrc && \
@@ -14,7 +14,7 @@ RUN apt-get install -y --no-install-recommends runit
 CMD bash -c 'export > /etc/envvars && /usr/bin/runsvdir /etc/service'
 
 # Utilities
-RUN apt-get install -y --no-install-recommends vim less net-tools inetutils-ping wget curl git telnet nmap socat dnsutils netcat tree htop unzip sudo software-properties-common jq psmisc iproute2 python ssh rsync gettext-base
+RUN apt-get install -y --no-install-recommends vim less net-tools inetutils-ping wget curl git telnet nmap socat dnsutils netcat tree htop unzip sudo software-properties-common jq psmisc iproute2 ssh rsync gettext-base
 
 #Proxy needs iptables
 RUN apt-get install -y --no-install-recommends iptables conntrack
